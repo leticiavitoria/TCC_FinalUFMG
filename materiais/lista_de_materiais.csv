@@ -1,0 +1,102 @@
+﻿Grupo;Item;Modelo;Qtd.;Preço unitário (R$);Subtotal (R$);Fonte
+nível 1: segurança cabeada;Sensor de presença PIR de teto 360°, 12 V, relé NA/NF;Intelbras IVP 3011 TETO;6;147,1;882,6;KaBuM
+nível 1: segurança cabeada;Detector de fumaça convencional 12/24 V, contato seco;Intelbras DFC 420 UN;2;97,91;195,82;Elétrica Polo
+nível 1: segurança cabeada;Detector de gás GLP 12–28 V, contato seco;Intelbras DGC 423;1;241,42;241,42;Distribuidor CFTV
+nível 1: segurança cabeada;Sensor de som com comparador, 5 V;KY-037 (microfone + LM393);2;8,93;17,86;Usinainfo
+nível 1: segurança cabeada;Relé de interface dos sensores de som e de chuva;Módulo relé 1 canal 5 V com optoacoplador;3;9,1;27,3;Usinainfo
+nível 1: segurança cabeada;Conversor 12 → 5 V dos sensores de som;MP1584EN;2;10,9;21,8;Curto Circuito
+nível 1: segurança cabeada;Sensor magnético (entrada, geladeira, banheiro, persiana);MC-38 NA com fio;4;10,88;43,52;Usinainfo
+nível 1: segurança cabeada;Boia de nível (cozinha, banheiro, área);Sensor de nível tipo boia 22 mm;3;13,47;40,41;Usinainfo
+nível 1: segurança cabeada;"Válvula solenoide de água 220 V, NF, 1/2""";Solenoide plástica 180°, 220 V NF;2;62,27;124,54;Usinainfo
+nível 1: segurança cabeada;"Válvula solenoide de gás 12 V, NF, 1/2""";Genérica (cotação anterior, não reconferida);1;143,68;143,68;Mercado Livre
+nível 1: segurança cabeada;Fechadura eletroímã 12 V, 180 kgf, suporte ZL;Kit eletroímã 180 kg ASSA ABLOY ref. 5055;2;227,5;455,00;Sguario
+nível 1: segurança cabeada;Sensor de temperatura e umidade RS-485 Modbus RTU;XY-MD02 (SHT40);3;85,12;255,36;Usinainfo
+nível 1: segurança cabeada;Sensor de chuva resistivo com placa;FC-37 com saída digital;1;15,00 *;15,00;Estimativa
+nível 1: segurança cabeada;Motor tubular de persiana 220 V, 30 Nm;Emteco 10142P;1;364,68;364,68;Disalum
+nível 1: segurança cabeada;Persiana externa de alumínio sob medida (janela da suíte);Fabricação local;1;1500,00 *;1500,00;Estimativa
+nível 1: monitoramento por rede;Microcontrolador;ESP32 DevKitC V4 (WROOM-32);8;40,75;326,00;MakerHero
+nível 1: monitoramento por rede;Câmera térmica 8×8, I2C;AMG8833;8;160,00;1280,00;Mouser
+nível 1: monitoramento por rede;Radar de presença 24 GHz;Hi-Link LD2410C;8;35,00;280,00;Shopee
+nível 1: monitoramento por rede;Sensor de distância ToF;VL53L1X (GY-VL53L1X);8;70,00 *;560,00;Estimativa
+nível 1: monitoramento por rede;Conversor 12 → 5 V;MP1584EN;8;10,9;87,2;Curto Circuito
+nível 1: monitoramento por rede;Placa de montagem;PCB ilhada 7 × 9 cm;8;2,5;20,00;Mercado Livre
+nível 1: monitoramento por rede;Caixa plástica de sobrepor;Patola (100 × 68 × 50 mm);8;20,00;160,00;Eletrogate
+nível 1: monitoramento por rede;Sensor de chama (cozinha);KY-026;1;6,57;6,57;Baú da Eletrônica
+nível 1: monitoramento por rede;"Sensor de fluxo de água 1/2"" (cozinha, banheiro, área)";YF-S201;3;23,09;69,27;Usinainfo
+nível 1: conforto;Lâmpada LED Zigbee 3.0 E27, 2700–6500 K;Doiting 12 W RGBCW (220 V);9;58,19;523,71;Magazine Luiza
+nível 1: conforto;Plafon de sobrepor E27;Taschibra Solari redondo;9;15,21;136,89;Magazine Luiza
+nível 1: conforto;Fita LED CCT 24 V, 2700–6500 K (sala e suíte, 10 m);LXP COB CCT 24 V (confirmar se o rolo é de 10 m);1;132,9;132,9;Magazine Luiza
+nível 1: conforto;Perfil de alumínio 2 m com difusor leitoso;Vled sobrepor slim 17 × 7 mm;5;31,82;159,1;Magazine Luiza
+nível 1: conforto;Controlador Zigbee 3.0 CCT, 5–24 V;Vital YSR-ZP-01 CCT;2;177,00;354,00;Magazine Luiza
+nível 1: conforto;Fita LED RGB 24 V (porta da suíte, não perturbe);5050 RGB 24 V, 30 LED/m, rolo 5 m;1;110,00 *;110,00;Estimativa
+nível 1: conforto;Controlador Zigbee 3.0 RGB, 5–24 V;Vital YSR-ZP-01 RGB+CCT;1;199,00;199,00;Magazine Luiza
+nível 1: conforto;Motor de cortina Zigbee com trilho (sala);Zemismart ZM25TQ (trilho até 4 m);1;1.300,00 *;1300,00;Estimativa
+nível 1: conforto;Controle infravermelho Wi-Fi do ar-condicionado;Broadlink RM4 Mini;1;199,00 *;199;Estimativa
+nível 1: conforto;Ar-condicionado split 9.000 BTU inverter, 220 V;Philco PAC9FT;1;1599,00;1599,00;Magazine Luiza
+nível 1: conforto;Difusor de aroma 220 V que liga ao ser energizado;Via Aroma Standard (elétrico de tomada);2;40,39;80,78;Magazine Luiza
+nível 2: quadro de comando;LOGO! 1, mestre, com display;Siemens 6ED1052-1MD08-0BA2;1;955,54;955,54;Dimensional
+nível 2: quadro de comando;LOGO! 2, escravo, sem display;Siemens 6ED1052-2MD08-0BA2;1;878,03;878,03;Eletrolico
+nível 2: quadro de comando;Módulo de expansão DM16 24R;Siemens 6ED1055-1NB10-0BA2;3;801,1;2403,3;Dimensional
+nível 2: quadro de comando;Fonte LOGO! Power 24 V, 2,5 A;Siemens 6EP3332-6SB00-0AY0;1;497,77;497,77;Dimensional
+nível 2: quadro de comando;Fonte 24 V, 150 W (fitas);Mean Well LRS-150-24;1;187,04;187,04;Fontes Mean Well
+nível 2: quadro de comando;Fonte 24 V, 108 W (campo);Mean Well LRS-100-24;1;140,98;140,98;Fontes Mean Well
+nível 2: quadro de comando;Fonte 12 V, 102 W;Mean Well LRS-100-12;1;147,56;147,56;Fontes Mean Well
+nível 2: quadro de comando;Kit de fixação DIN das fontes LRS;Mean Well DRP-03 + DRL-01 (LRS-100) ou DRL-02 (LRS-150);3;30,00 *;90,00;Estimativa
+nível 2: quadro de comando;Disjuntor bipolar 10 A, curva C (entrada do QC);Siemens 5SL1 210-7MB;1;47,77;47,77;Dimensional
+nível 2: quadro de comando;Porta-fusível DIN 10 × 38 mm, 1 polo;Metaltex FH321;5;12,38;61,9;Eletrolico
+nível 2: quadro de comando;Fusível gG 10 × 38 mm, 2 A (FU1 a FU4);Eletromec C1038GL50002C;4;5,13;20,52;Loja Elétrica
+nível 2: quadro de comando;Fusível gG 10 × 38 mm, 4 A (FU5);Eletromec C1038GL50004C;1;9,72;9,72;Loja Elétrica
+nível 2: quadro de comando;Borne de passagem 2,5 mm²;Weidmüller WDU 2.5 (1020000000);70;4,01;280,7;Loja Elétrica
+nível 2: quadro de comando;Borne de terra 2,5 mm²;Weidmüller WPE 2.5 (1010000000);10;11,93;119,3;Proesi
+nível 2: quadro de comando;Tampa final dos bornes;Weidmüller WAP 2.5-10 (1050000000);10;2,38;23,8;Loja Elétrica
+nível 2: quadro de comando;Trilho DIN 35 mm, barra 2 m;Lumibras S35;2;24,11;48,22;Loja Elétrica
+nível 2: quadro de comando;Canaleta ranhurada 40 × 40 mm, barra 2 m;Dexson DXN10062;2;85,52;171,04;South Safe
+nível 2: quadro de comando;Terminais tubulares (ilhós) de 0,5 a 6 mm²;Kit 400 peças;1;21,76;21,76;Proesi
+nível 2: quadro de comando;Anilhas de identificação;Hellermann WISC-1 (200 un.);1;119,7;119,7;Cetti
+nível 2: quadro de comando;Caixa de comando 600 × 500 × 200 mm com placa;QSS-652;1;368;368;Cetti
+nível 2: quadro de comando;Nobreak interativo 1.200 VA, 220 V;Intelbras XNB NEO 1200 VA 220 V;1;729,9;729,9;Loja Intelbras
+nível 3: comunicação;Módulo de comunicação (sem modem/antenas);Siemens LOGO! CIM 6ED1055-5MC08-0BA3;1;1.800,00 *;1800,00;Estimativa
+nível 3: comunicação;Modem 4G mini PCIe homologado pela Siemens;SIMCom SIM7600G-H PCIe;1;399,1;399,1;Importe Info Peças
+nível 3: comunicação;Cabo pigtail U.FL → SMA (modem ao painel do CIM);Delock 88419 ou equivalente;2;30,00 *;60,00;Estimativa
+nível 3: comunicação;Antena LTE externa;Siemens ANT896-4ME (6GK5896-4ME00-0AA0);1;750,00 *;750,00;Estimativa
+nível 3: comunicação;Cabo da antena N → SMA;Siemens 6XV1875-5LH ou equivalente;1;150,00 *;150,00;Estimativa
+nível 3: comunicação;Access point de teto (vem com adaptador PoE);TP-Link EAP225;2;499;998,00;Magazine Luiza
+nível 3: comunicação;Roteador Wi-Fi dual band;TP-Link Archer C6 AC1300;1;219,98;219,98;Magazine Luiza
+nível 3: comunicação;Coordenador Zigbee 3.0 USB do servidor local;SONOFF ZBDongle-E;1;250,00 *;250,00;Estimativa
+nível 4: supervisão local;Servidor local, mini PC;Beelink Mini S12 Pro (N100, 16 GB, SSD 500 GB);1;1.964,39;1964,39;Magazine Luiza
+nível 4: supervisão local;Suporte VESA do mini PC;Suporte universal de parede;1;40,00 *;40,00;Estimativa
+nível 5: interface;Botão de pânico cogumelo 40 mm vermelho, pulsante, 1NA;Metaltex P20AMR-R-1A;4;12,6;50,4;Luz Automação
+nível 5: interface;Caixa plástica 1 furo 22 mm (pânico e verificação);Metaltex TN2-B1;5;43,88;219,4;Loja Elétrica
+nível 5: interface;Botão de verificação 22 mm verde, 1NA;Metaltex P20AFR-G-1A;1;13,53;13,53;Loja Elétrica
+nível 5: interface;Coluna de sinalização LED verde, amarela e vermelha, 24 V;Schneider XVGB3W;1;292,99;292,99;Eletrotrafo
+nível 5: interface;Buzzer de painel 24 V;Metaltex BZ20-7-B;1;19,19;19,19;Eletrolico
+nível 5: interface;Sirene audiovisual (som e strobo), 12–28 V;Intelbras SAV 420C;1;68,88;68,88;Distribuidor CFTV
+nível 5: interface;Assistente de voz local;Home Assistant Voice Preview Edition;2;550,00 *;1100;Estimativa
+nível 5: interface;Tablet de parede;Samsung Galaxy Tab A9+ 64 GB Wi-Fi;2;999;1998;Magazine Luiza
+quadro de distribuição de circuitos;Disjuntor geral tripolar 63 A, curva C, 6 kA;Siemens 5SL6363-7MB;1;299,99;299,99;Dimensional
+quadro de distribuição de circuitos;DDR 1P+N 10 A, 30 mA (C1 e C2);Siemens 5SU1356-1KK10;2;899,99;1799,98;Dimensional
+quadro de distribuição de circuitos;DDR 1P+N 16 A, 30 mA (C3, C5, C6 e C8);Siemens 5SU1356-1KK16;4;901,99;3607,96;Dimensional
+quadro de distribuição de circuitos;DDR 1P+N 20 A, 30 mA (C4);Siemens 5SU1356-1KK20;1;899,99;899,99;Dimensional
+quadro de distribuição de circuitos;Disjuntor bipolar 25 A, curva C (C7);Siemens 5SL1225-7MB;1;52,99;52,99;Dimensional
+quadro de distribuição de circuitos;Disjuntor bipolar 16 A, curva C (C9);Siemens 5SL1216-7MB;1;47,77;47,77;Dimensional
+quadro de distribuição de circuitos;Disjuntor bipolar 10 A, curva C (C10 e C11);Siemens 5SL1210-7MB;2;47,77;95,54;Dimensional
+quadro de distribuição de circuitos;Interruptor DR bipolar 25 A, 30 mA (C7);Siemens 5SV4312-0MB;1;355,99;355,99;Dimensional
+quadro de distribuição de circuitos;Interruptor DR bipolar 16 A, 30 mA (C9 a C11);Siemens 5SV4311-0;3;454,43;1363,29;Dimensional
+quadro de distribuição de circuitos;DPS classe II, 275 V, 20/45 kA;Siemens 5SD7661-4MB;3;72,99;218,97;Dimensional
+quadro de distribuição de circuitos;Trilho DIN de 44 posições, barramento trifásico;Gomes QDTEV 100 A;1;754,64;754,64;Loja Elétrica
+infraestrutura elétrica e de rede;Cabo 16 mm² HEPR 0,6/1 kV;Cobrecom HEPR 1 kV;50;20,00 *;1000;Estimativa · Magazine Luiza
+infraestrutura elétrica e de rede;Cabo flexível 4,0 mm² 750 V, em metros;Cobrecom antichama (m);60;3,89;233,4;Magazine Luiza
+infraestrutura elétrica e de rede;Cabo flexível 2,5 mm² 750 V, rolo 100 m;Sil;3;278,07;834,21;Magazine Luiza
+infraestrutura elétrica e de rede;Cabo flexível 1,5 mm² 750 V, rolo 100 m;Sil Flexsil;1;196,7;196,7;Magazine Luiza
+infraestrutura elétrica e de rede;Cabo de sinal 4 vias 0,50 mm², rolo 100 m;Telecam alarme 4 × 0,50;2;178,43;356,86;Magazine Luiza
+infraestrutura elétrica e de rede;Cabo PP 2 × 1,0 mm², em metros;Sil 500 V (rolo 100 m: R$ 409,00);35;4,09;143,15;Magazine Luiza
+infraestrutura elétrica e de rede;Cabo PP 3 × 1,5 mm², em metros;Perfil;30;9,5;285;Telhanorte
+infraestrutura elétrica e de rede;Cabo blindado RS-485, 2 × 22 AWG, peça de 20 m;Cirilo cabo manga blindado;1;132,06;132,06;Magazine Luiza
+infraestrutura elétrica e de rede;Cabo Cat5e UTP, em metros;Intelbras Impact Lan;40;4,23;169,2;Magazine Luiza
+infraestrutura elétrica e de rede;Eletroduto corrugado Ø 20 mm, rolo 50 m;Krona amarelo;2;65,08;130,16;Magazine Luiza
+infraestrutura elétrica e de rede;Eletroduto corrugado Ø 25 mm, rolo 50 m;Tigre Tigreflex amarelo;1;134,89;134,89;Magazine Luiza
+infraestrutura elétrica e de rede;Eletroduto corrugado reforçado Ø 32 mm (enterrado), rolo 25 m;Tramontina laranja;2;121,47;242,94;Magazine Luiza
+infraestrutura elétrica e de rede;"Haste de aterramento 5/8"" × 2,40 m";MS Artefatos 300116;1;75,39;75,39;Magazine Luiza
+infraestrutura elétrica e de rede;Conector da haste (grampo duplo U);"GTDU 5/8""–3/4""";1;20,35;20,35;Magazine Luiza
+infraestrutura elétrica e de rede;Caixa de inspeção do aterramento;Homelux PVC 23 × 20 cm;1;25,9;25,9;Magazine Luiza
+infraestrutura elétrica e de rede;Caixas, tomadas e interruptores (30 tomadas, 9 pontos de luz);Tramontina Liz + caixas Tigre;1;773,81 *;773,81;Estimativa · Magazine Luiza

@@ -1,0 +1,114 @@
+# =====================================================================
+#  Servidor local - integracao com o LOGO! 1 por Modbus TCP
+#  Leitura de estado em modo somente leitura (coils dos marcadores)
+#  Escrita restrita aos registradores de comando HR130 a HR136
+#  Enderecos dos marcadores: Mn -> coil 8255 + n
+#  Enderecos das saidas:     Qn -> coil n - 1
+#  Enderecos das entradas:   In -> entrada discreta n - 1
+# =====================================================================
+
+default_config:
+
+modbus:
+  - name: logo1
+    type: tcp
+    host: 192.168.1.10
+    port: 503
+    binary_sensors:
+      # ---------------- cenas ----------------
+      - name: "Cena Sono"
+        address: 8265          # M10
+        input_type: coil
+        scan_interval: 2
+      - name: "Cena Manha"
+        address: 8266          # M11
+        input_type: coil
+        scan_interval: 2
+      - name: "Cena Foco"
+        address: 8267          # M12
+        input_type: coil
+        scan_interval: 2
+      - name: "Cena Calmante"
+        address: 8268          # M13
+        input_type: coil
+        scan_interval: 2
+      - name: "Emergencia"
+        address: 8269          # M14
+        input_type: coil
+        device_class: safety
+        scan_interval: 1
+      # ---------------- verificacao e eventos ----------------
+      - name: "Anomalia na verificacao"
+        address: 8260          # M5 ANOM
+        input_type: coil
+        device_class: problem
+        scan_interval: 2
+      - name: "Calma falhou"
+        address: 8279          # M24 CALMA_FALHOU
+        input_type: coil
+        scan_interval: 5
+      - name: "Falha de ESP32"
+        address: 8315          # M60 FALHA_ESP
+        input_type: coil
+        device_class: problem
+        scan_interval: 5
+      # ---------------- persiana e chuva ----------------
+      - name: "Chuva"
+        address: 8297          # M42 CHUVA
+        input_type: coil
+        device_class: moisture
+        scan_interval: 2
+      - name: "Persiana fechada"
+        address: 8301          # M46 PERS_FECHADA
+        input_type: coil
+        scan_interval: 2
+      - name: "Persiana descendo"
+        address: 8302          # M47 PERS_DESCENDO
+        input_type: coil
+        device_class: moving
+        scan_interval: 1
+      - name: "Persiana subindo"
+        address: 8305          # M50 PERS_SUBINDO
+        input_type: coil
+        device_class: moving
+        scan_interval: 1
+      # ---------------- portas (reed: 1 = fechada) ----------------
+      - name: "Porta da entrada"
+        address: 2             # I3
+        input_type: discrete_input
+        device_class: door     # on = aberta -> logica invertida abaixo
+        scan_interval: 2
+      - name: "Porta da geladeira"
+        address: 7             # I8
+        input_type: discrete_input
+        scan_interval: 5
+      - name: "Sensor de chuva (bruto)"
+        address: 18            # I19
+        input_type: discrete_input
+        scan_interval: 5
+      - name: "Reed da persiana"
+        address: 23            # I24
+        input_type: discrete_input
+        scan_interval: 5
+      # ---------------- saidas (leitura) ----------------
+      - name: "Sirene externa"
+        address: 12            # Q13
+        input_type: coil
+        device_class: sound
+        scan_interval: 2
+
+template:
+  - binary_sensor:
+      # os reeds energizados significam FECHADO: inverte para exibir como porta
+      - name: "Entrada aberta"
+        device_class: door
+        state: "{{ is_state('binary_sensor.porta_da_entrada', 'off') }}"
+      - name: "Geladeira aberta"
+        device_class: door
+        state: "{{ is_state('binary_sensor.porta_da_geladeira', 'off') }}"
+      - name: "Persiana aberta"
+        device_class: window
+        state: "{{ is_state('binary_sensor.reed_da_persiana', 'off') }}"
+
+script: !include scripts.yaml
+automation: !include automations.yaml

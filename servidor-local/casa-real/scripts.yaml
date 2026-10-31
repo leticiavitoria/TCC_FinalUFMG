@@ -1,0 +1,56 @@
+# Roteiros de comando: pulso de 1 s no registrador correspondente.
+# HR130 Sono | HR131 Manha | HR132 Foco | HR133 Calmante
+# HR134 Verificacao | HR135 Persiana sobe | HR136 Persiana desce
+
+pulso_registrador:
+  mode: queued
+  fields:
+    registrador:
+      description: "Endereco do holding register (130 a 136)"
+  sequence:
+    - service: modbus.write_register
+      data:
+        hub: logo1
+        address: "{{ registrador }}"
+        value: 1
+    - delay: "00:00:01"
+    - service: modbus.write_register
+      data:
+        hub: logo1
+        address: "{{ registrador }}"
+        value: 0
+
+cena_sono:
+  sequence:
+    - service: script.pulso_registrador
+      data: { registrador: 130 }
+
+cena_manha:
+  sequence:
+    - service: script.pulso_registrador
+      data: { registrador: 131 }
+
+cena_foco:
+  sequence:
+    - service: script.pulso_registrador
+      data: { registrador: 132 }
+
+cena_calmante:
+  sequence:
+    - service: script.pulso_registrador
+      data: { registrador: 133 }
+
+verificar_casa:
+  sequence:
+    - service: script.pulso_registrador
+      data: { registrador: 134 }
+
+persiana_sobe:
+  sequence:
+    - service: script.pulso_registrador
+      data: { registrador: 135 }
+
+persiana_desce:
+  sequence:
+    - service: script.pulso_registrador
+      data: { registrador: 136 }

@@ -1,0 +1,25 @@
+# Figuras
+
+Figuras do volume principal (a Figura 2, de terceiros, está apenas no PDF) e circuitos de portas lógicas do volume complementar (H.1 a H.7).
+
+- [Figura 1 - Sequência metodológica do trabalho](fig01_metodologia.png)
+- [Figura 3 - Arquitetura em cinco níveis do sistema de automação](fig03_arquitetura_cinco_niveis.png)
+- [Figura 4 - Diagrama de tempo do mecanismo de supervisão dos ESP32](fig04_watchdog_diagrama_de_tempo.png)
+- [Figura 5 - Rampa de iluminação da cena Manhã](fig05_rampa_cena_manha.png)
+- [Figura 6 - Máquina de estados da hierarquia de cenas](fig06_maquina_de_estados.png)
+- [Figura 7 - Ocupação dos recursos de entrada e saída](fig07_ocupacao_dos_clps.png)
+- [Figura 8 - Disposição física dos componentes no quadro de comando](fig08_layout_quadro_de_comando.png)
+- [Figura 9 - Distribuição de energia no quadro de comando](fig09_distribuicao_energia_qc.png)
+- [Figura 10 - Planta esquemática com pontos de utilização e circuitos](fig10_planta_eletrica.png)
+- [Figura 11 - Divisão dos circuitos terminais por tipo de carga](fig11_divisao_dos_circuitos.png)
+- [Figura 12 - Equilíbrio de fases e demanda provável](fig12_fases_e_demanda.png)
+- [Figura 13 - Diagrama unifilar do padrão de entrada e do QDC](fig13_diagrama_unifilar.png)
+- [Figura 14 - Separação entre eletrodutos de sinal e de força](fig14_eletrodutos_sinal_e_forca.png)
+- [Figura 15 - Sequência de comissionamento do sistema](fig15_comissionamento.png)
+- [Figura H.1 - Habilitação da Verificação TOC (M15 ativo e M14 inativo)](portas-logicas/H1_habilitacao_toc.png)
+- [Figura H.2 - Monitor de ruído da cena Foco com validação cruzada](portas-logicas/H2_monitor_ruido_foco.png)
+- [Figura H.3 - Coleta dos gatilhos da cena Emergência](portas-logicas/H3_gatilhos_emergencia.png)
+- [Figura H.4 - Multiplexação do buzzer por prioridade](portas-logicas/H4_mux_buzzer.png)
+- [Figura H.5 - Exclusividade mútua do semáforo](portas-logicas/H5_exclusividade_semaforo.png)
+- [Figura H.6 - Ativação do botão de pânico por pressão sustentada ou sucessivas](portas-logicas/H6_botao_panico.png)
+- [Figura H.7 - Intertravamento e tempo morto das saídas da persiana](portas-logicas/H7_intertravamento_persiana.png)

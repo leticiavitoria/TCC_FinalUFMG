@@ -1,0 +1,40 @@
+# Verificação por simulação
+
+A lógica dos dois controladores foi verificada em co-simulação no LOGO! Soft Comfort V8.4, com 30 casos de teste, todos aprovados. Os temporizadores longos foram reduzidos durante o ensaio (por exemplo, a confirmação da chuva de 30 s para 3 s e o pulso da persiana de 40 s para 4 s).
+
+Cada pasta `TC-xx/` guarda as capturas de tela do estado final do caso no simulador.
+
+## Plano e resultados (Quadro E.1 do volume principal)
+
+| ID | Objetivo | Pré-condição | Estímulo | Resultado esperado | Resultado observado |
+|---|---|---|---|---|---|
+| TC-01 | Cena Sono por voz | Casa normal; nenhuma cena ativa | Forçar L1-I14 = 1 por 1 s | M10 = 1; Q1, Q2, Q3 e Q9 desligam; Q11 pulsa e a persiana desce; NQ leva M10 ao L2; L2-Q1 tranca; L2-Q5 liga por 30 min | Conforme esperado; M10 retido, persiana descida e marcadores transferidos ao LOGO! 2 |
+| TC-02 | Verificação pós-Sono, casa normal | TC-01 executado; casa normal, com I24 = 1 após a descida | Aguardar a leitura automática, 45 s após a ativação (5 s no ensaio) | Bip duplo em L1-Q5; L1-Q6 (verde) liga; L1-Q7 permanece 0 | Bip duplo e verde confirmados |
+| TC-03 | Verificação pós-Sono, anomalia | Repetir TC-01 com L1-I3 = 0 (porta da entrada aberta) | Aguardar a leitura automática | L1-Q7 (amarelo) liga; verde não liga; o painel aponta o sensor em alarme | Amarelo aceso, verde inibido e mensagem de sensor em alarme no display |
+| TC-04 | Cena Manhã com Sono ativo | M10 = 1 | Forçar L1-I15 = 1 | M11 = 1 e M10 = 0 no mesmo ciclo; Q1, Q2, Q3 ligam; L2-Q1 destranca; Q10 pulsa e a persiana sobe; bip na fase de 5 min; sequência de 0, 5 e 10 min nos temporizadores | Transição no mesmo ciclo; válvulas abertas e persiana erguida |
+| TC-05 | Manhã sem Sono ativo | Nenhuma cena ativa | Forçar L1-I15 = 1 | M11 permanece 0 (intertravamento de pré-condição) | M11 permaneceu em 0 |
+| TC-06 | Cena Foco | Nenhuma cena ativa | Forçar L1-I16 = 1 | M12 = 1; L1-Q9 desliga; L1-Q7 liga; L1-Q6 desliga; L2-Q5 desliga | Reprovado na primeira rodada, por entrada vizinha selecionada no marcador de evento de gás; corrigido e aprovado |
+| TC-07 | Monitor de ruído do Foco, com presença | M12 = 1; L1-I1 = 1 | Forçar L1-I4 = 1 por mais de 500 ms | Bip curto em L1-Q5 após o atraso de 500 ms | Bip único após os 500 ms |
+| TC-08 | Monitor de ruído, ruído impulsivo | M12 = 1; L1-I1 = 1 | Forçar L1-I4 = 1 por menos de 500 ms | Nenhum bip (On-Delay não completa) | Nenhum bip |
+| TC-09 | Monitor de ruído, sem presença | M12 = 1; L1-I1 = 0 e NI de presença = 0 | Forçar L1-I4 = 1 por 1 s | Nenhum bip (validação cruzada) | Nenhum bip |
+| TC-10 | Cena Calmante por voz | Nenhuma cena ativa | Forçar L1-I17 = 1 por 1 s | M13 = 1; L1-Q9 e L1-Q6 ligam; tranca e difusor da suíte acionados no LOGO! 2 | Conforme esperado nos dois controladores |
+| TC-11 | Emergência pelo botão de pânico | Nenhuma cena ativa | Manter L1-I2 = 1 por 2 s | M14 = 1 e marcador de evento de pânico = 1; M13 permanece 0 | Conforme esperado; ativação por três pressões sucessivas também verificada |
+| TC-12 | Falha da estratégia calmante | M13 = 1; presença confirmada | Com M13 = 1, manter ruído e presença por 5 min (reduzido para 5 s) | CALMA_FALHOU = 1; L1-Q7 (amarelo) liga; M14 permanece 0; M13 permanece 1 | Reprovado na primeira rodada, por entrada vizinha no bloco do ruído persistente; corrigido e aprovado |
+| TC-13 | Emergência por gás | Qualquer cena P2 ativa; casa normal | Forçar L1-I6 = 1 | M14 = 1 em um ciclo; M10 a M13 = 0; Q3, Q1, Q2 desligam; L1-Q8 liga; L1-Q5 em sirene; Q13 liga a sirene externa; L1-Q4 e L2-Q1 destrancam; Q10 pulsa e a persiana sobe; M20 = 1 | Conforme esperado; Emergência retida após a remoção do gatilho |
+| TC-14 | Emergência por queda (rede) | Nenhuma cena ativa | Acionar o simulador de queda (L1-I20) | M14 = 1; marcador de evento de queda = 1 | Conforme esperado |
+| TC-15 | Reset manual da Emergência | M14 = 1 | Nova pressão de L1-I2 por 5 s com a Emergência ativa | M14 = 0; marcadores de evento zerados; saídas em estado seguro lógico | Conforme esperado; cancelamento pelos botões do LOGO! 2 também verificado, e pressão de 5 s sem Emergência ativa não gera reset |
+| TC-16 | Emergência não se auto-desativa | M14 = 1 | Remover o gatilho (L1-I6 = 0) e aguardar | M14 permanece 1 até o reset manual | M14 retido até o reset manual |
+| TC-17 | Verificação pelo botão dedicado | Cena Foco ativa (M12 = 1) | Toque em L1-I18 | M15 = 1; verde pisca por 3 s e bip duplo; cena Foco preservada | Conforme esperado |
+| TC-18 | TOC com anomalia | Nenhuma cena ativa; L1-I8 = 0 (geladeira aberta) | Toque em L1-I18 | Amarelo por 3 s e bip longo; retorno ao estado anterior | Amarelo e bip longo confirmados |
+| TC-19 | TOC durante Emergência | M14 = 1 | Toque em L1-I18 | M15 pode ativar, mas semáforo e buzzer não se alteram (regra M15 e não M14) | Sem efeito no semáforo e no buzzer |
+| TC-20 | Exclusividade do semáforo | Percorrer TC-01, TC-06 e TC-13 em sequência | Observar L1-Q6, Q7 e Q8 continuamente | Nunca duas cores em 1 simultaneamente | Exclusividade mantida em toda a sequência |
+| TC-21 | Última cena P2 prevalece | M10 = 1 | Forçar L1-I16 = 1 (Foco) | M12 = 1 e M10 = 0 no mesmo ciclo | Transferência no mesmo ciclo |
+| TC-22 | Estado seguro ao energizar | Simulação parada | Iniciar a simulação | Todas as saídas em 0; M10 a M15 em 0; nenhuma cena ativa | Partida em estado seguro lógico |
+| TC-23 | Supervisão do ESP32 (watchdog) | Simulação ativa | Desligar o simulador do pulso de vida (L1-I23) por mais de 5 s | Marcador de falha do cômodo = 1; M14 permanece 0; pulso religado por 3 s limpa o marcador | Reprovado na primeira rodada, por ramificação trocada entre os ramos de silêncio e de vida; corrigido e aprovado |
+| TC-24 | Multiplexação do buzzer | M12 = 1 com ruído ativo e M14 = 1 em seguida | Ativar os dois padrões em sequência | A sirene da Emergência prevalece sobre o bip de ruído | Sirene prevaleceu e os bips retornaram após o reset |
+| TC-25 | Inibição do gatilho de ruído durante o Sono | M10 = 1; L1-I1 = 1 | Forçar L1-I4 = 1 por mais de 30 s | M13 permanece 0 e M10 permanece 1; nenhuma ação da Calmante | M13 permaneceu em 0 e o Sono foi preservado |
+| TC-26 | Persiana nas cenas Sono e Manhã | Casa normal; persiana aberta (I24 = 0) | Ativar o Sono; após a descida, forçar I24 = 1 e ativar a Manhã | No Sono, M45 pulsa, M47 = 1 por 40 s (4 s no ensaio) e Q11 aciona; na Manhã, M43 pulsa, M50 = 1 e Q10 aciona; cada saída desliga ao fim do pulso | Pulsos e latches conforme esperado nos dois sentidos |
+| TC-27 | Chuva desce a persiana e bloqueia a subida | Persiana aberta; nenhuma cena ativa | Forçar L1-I19 = 1 por 3 s (30 s reais); com M42 = 1, tentar a subida pela tecla F1; desligar I19 e aguardar 10 s (10 min reais) | M42 = 1 após a confirmação; Q11 aciona e a persiana desce; a subida fica bloqueada enquanto M42 = 1; após a liberação, a persiana permanece fechada até novo comando | Descida automática, bloqueio da subida e liberação após a espera, sem subida espontânea |
+| TC-28 | Emergência prevalece sobre a chuva | M42 = 1 (chuva ativa); persiana fechada | Ativar a Emergência pelo botão de pânico e, depois, executar o reset manual | Q10 aciona e a persiana sobe mesmo com a chuva ativa; após o reset, a persiana permanece como está até novo comando ou nova chuva | Subida executada durante a chuva; estado mantido após o reset |
+| TC-29 | Comando manual pelas teclas de função | Nenhuma cena ativa; sem chuva | Pressionar F1 (sobe) e, concluído o curso, F2 (desce) | Cada tecla gera uma borda de comando; Q10 e Q11 acionam nos sentidos correspondentes | Subida e descida manuais conforme esperado |
+| TC-30 | Intertravamento e tempo morto da persiana | Persiana em movimento de subida (M50 = 1) | Comandar a descida pela tecla F2 durante o curso | M50 desliga, M47 liga e Q11 só aciona 0,5 s depois de Q10 desligar; Q10 e Q11 nunca ficam em 1 juntas | Inversão com tempo morto respeitado; nenhuma sobreposição das saídas |
