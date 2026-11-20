@@ -1,1 +1,246 @@
-[]
+# Rotinas de conforto e avisos do servidor local.
+# Cada rotina reage a um marcador de cena lido do LOGO! 1 e atua apenas
+# nos dispositivos Zigbee e Wi-Fi. Nenhuma função de segurança está aqui.
+
+# ---------------- cena Sono ----------------
+- id: conforto_sono
+  alias: Conforto - cena Sono
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.cena_sono
+      from: "off"
+      to: "on"
+  action:
+    - service: light.turn_on
+      target: { entity_id: light.lampadas }
+      data: { brightness_pct: 5, color_temp_kelvin: 2700 }
+    - service: cover.close_cover
+      target: { entity_id: cover.cortina_da_sala }
+    - service: remote.send_command
+      target: { entity_id: remote.emissor_ir_suite }
+      data: { device: ar_condicionado, command: frio_23 }
+    - service: light.turn_on
+      target: { entity_id: light.nao_perturbe }
+      data: { color_name: blue }
+
+# ---------------- cena Manhã: rampa em três fases ----------------
+- id: conforto_manha
+  alias: Conforto - cena Manhã
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.cena_manha
+      from: "off"
+      to: "on"
+  action:
+    - service: light.turn_on
+      target: { entity_id: light.lampadas }
+      data: { brightness_pct: 10, transition: 10 }
+    - service: cover.open_cover
+      target: { entity_id: cover.cortina_da_sala }
+    - service: light.turn_off
+      target: { entity_id: light.nao_perturbe }
+    - delay: "00:05:00"
+    # a rampa só continua se a Manhã ainda for a cena ativa
+    - condition: state
+      entity_id: binary_sensor.cena_manha
+      state: "on"
+    - service: light.turn_on
+      target: { entity_id: light.lampadas }
+      data: { brightness_pct: 40, transition: 10 }
+    - delay: "00:05:00"
+    - condition: state
+      entity_id: binary_sensor.cena_manha
+      state: "on"
+    - service: light.turn_on
+      target: { entity_id: light.lampadas }
+      data: { brightness_pct: 80, transition: 10 }
+    - service: remote.send_command
+      target: { entity_id: remote.emissor_ir_suite }
+      data: { device: ar_condicionado, command: frio_24 }
+
+# ---------------- cena Foco ----------------
+- id: conforto_foco
+  alias: Conforto - cena Foco
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.cena_foco
+      from: "off"
+      to: "on"
+  action:
+    - service: light.turn_on
+      target: { entity_id: light.lampadas }
+      data: { brightness_pct: 70, color_temp_kelvin: 4000 }
+    - service: cover.set_cover_position
+      target: { entity_id: cover.cortina_da_sala }
+      data: { position: 50 }
+    - service: remote.send_command
+      target: { entity_id: remote.emissor_ir_suite }
+      data: { device: ar_condicionado, command: frio_22 }
+    - service: light.turn_on
+      target: { entity_id: light.nao_perturbe }
+      data: { color_name: yellow }
+
+# ---------------- cena Calmante ----------------
+- id: conforto_calmante
+  alias: Conforto - cena Calmante
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.cena_calmante
+      from: "off"
+      to: "on"
+  action:
+    - service: light.turn_on
+      target: { entity_id: light.lampadas }
+      data: { brightness_pct: 15, color_temp_kelvin: 2200 }
+    - service: light.turn_on
+      target: { entity_id: [light.fita_sala, light.fita_suite] }
+      data: { color_temp_kelvin: 2700 }
+    - service: cover.close_cover
+      target: { entity_id: cover.cortina_da_sala }
+    - service: media_player.play_media
+      target: { entity_id: media_player.assistente_suite }
+      data:
+        media_content_id: media-source://media_source/local/sons_da_natureza.mp3
+        media_content_type: music
+    - service: light.turn_on
+      target: { entity_id: light.nao_perturbe }
+      data: { color_name: purple }
+
+# ---------------- cena Emergência ----------------
+- id: conforto_emergencia
+  alias: Conforto - cena Emergência
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.emergencia
+      from: "off"
+      to: "on"
+  action:
+    - service: light.turn_on
+      target: { entity_id: light.lampadas }
+      data: { brightness_pct: 100 }
+    - service: cover.open_cover
+      target: { entity_id: cover.cortina_da_sala }
+    - service: media_player.media_stop
+      target: { entity_id: media_player.assistente_suite }
+    # aguarda a leitura do marcador de evento para informar o motivo
+    - wait_template: >
+        {{ ['binary_sensor.evento_gas', 'binary_sensor.evento_fumaca',
+            'binary_sensor.evento_vazamento', 'binary_sensor.evento_queda',
+            'binary_sensor.evento_panico'] | select('is_state', 'on') | list | count > 0 }}
+      timeout: "00:00:10"
+    # aviso complementar: o alerta ao cuidador é o SMS enviado pelo controlador
+    - service: notify.cuidador
+      data:
+        title: "Emergência na casa"
+        message: >
+          Cena de Emergência ativa.
+          {% if is_state('binary_sensor.evento_gas', 'on') %}Motivo: gás.
+          {% elif is_state('binary_sensor.evento_fumaca', 'on') %}Motivo: fumaça.
+          {% elif is_state('binary_sensor.evento_vazamento', 'on') %}Motivo: vazamento de água.
+          {% elif is_state('binary_sensor.evento_queda', 'on') %}Motivo: queda ou crise.
+          {% elif is_state('binary_sensor.evento_panico', 'on') %}Motivo: botão de pânico.
+          {% endif %}
+    # indicador de não perturbe em vermelho piscante enquanto durar a Emergência
+    - repeat:
+        while:
+          - condition: state
+            entity_id: binary_sensor.emergencia
+            state: "on"
+        sequence:
+          - service: light.turn_on
+            target: { entity_id: light.nao_perturbe }
+            data: { color_name: red }
+          - delay: "00:00:01"
+          - service: light.turn_off
+            target: { entity_id: light.nao_perturbe }
+          - delay: "00:00:01"
+
+# ---------------- fim das cenas ----------------
+- id: conforto_sem_cena
+  alias: Conforto - nenhuma cena ativa
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.cena_sono
+        - binary_sensor.cena_foco
+        - binary_sensor.cena_calmante
+        - binary_sensor.emergencia
+      from: "on"
+      to: "off"
+      for: "00:00:10"
+  condition:
+    - condition: state
+      entity_id:
+        - binary_sensor.cena_sono
+        - binary_sensor.cena_manha
+        - binary_sensor.cena_foco
+        - binary_sensor.cena_calmante
+        - binary_sensor.emergencia
+      state: "off"
+  action:
+    - service: light.turn_off
+      target: { entity_id: [light.nao_perturbe, light.fita_sala, light.fita_suite] }
+    - service: media_player.media_stop
+      target: { entity_id: media_player.assistente_suite }
+
+# ---------------- avisos ----------------
+- id: aviso_falha_esp32
+  alias: Aviso - nó de monitoramento sem resposta
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.falha_de_esp32
+      from: "off"
+      to: "on"
+      for: "00:00:10"
+  action:
+    - service: notify.cuidador
+      data:
+        title: "Nó de monitoramento sem resposta"
+        message: "Um nó parou de responder. A detecção de queda está indisponível nesse cômodo."
+
+- id: registro_calmante_falhou
+  alias: Registro - Calmante falhou
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.calmante_falhou
+      from: "off"
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: input_boolean.registro_habilitado
+      state: "on"
+  action:
+    - service: logbook.log
+      data:
+        name: "Cena Calmante"
+        message: "o ruído persistiu com a cena ativa (Calmante falhou)"
+        entity_id: binary_sensor.calmante_falhou
+
+# ---------------- sugestão de rotinas ----------------
+# A rotina apenas sugere: nenhuma cena é ativada por ela.
+- id: sugestao_diaria
+  alias: Sugestão de rotina do dia
+  trigger:
+    - platform: time
+      at: "08:00:00"
+  condition:
+    - condition: state
+      entity_id: input_boolean.sugestoes_habilitadas
+      state: "on"
+  action:
+    - service: shell_command.gerar_sugestao
+      response_variable: resultado
+    - variables:
+        texto: "{{ (resultado.stdout | default('', true)) | trim }}"
+    - service: input_text.set_value
+      target: { entity_id: input_text.sugestao_do_dia }
+      data:
+        value: "{{ texto[:255] }}"
+    - condition: template
+      value_template: "{{ texto | length > 0 }}"
+    - service: notify.morador
+      data:
+        title: "Sugestão para hoje"
+        message: "{{ texto }}"

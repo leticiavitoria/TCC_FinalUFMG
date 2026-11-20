@@ -1,0 +1,191 @@
+# =====================================================================
+#  Simulação do servidor local, sem nenhum equipamento
+#  Os marcadores, as saídas e as entradas do LOGO! 1 são representados
+#  por chaves (input_boolean) e a lógica do CLP é imitada em scripts.yaml
+#  e automations.yaml. As entidades exibidas nos painéis têm os mesmos
+#  nomes da configuração da casa real.
+# =====================================================================
+
+homeassistant:
+  name: Casa (simulação)
+  unit_system: metric
+  time_zone: America/Sao_Paulo
+  country: BR
+
+default_config:
+
+script: !include scripts.yaml
+automation: !include automations.yaml
+
+# ---------------------------------------------------------------------
+#  Temas dos painéis (os painéis usam o tema casa_escura)
+# ---------------------------------------------------------------------
+frontend:
+  themes:
+    casa_clara:
+      primary-color: "#1F6F78"
+      accent-color: "#E0A030"
+      primary-text-color: "#1E2A32"
+      secondary-text-color: "#5C6B75"
+      primary-background-color: "#F1F4F5"
+      secondary-background-color: "#E8EDEF"
+      card-background-color: "#FFFFFF"
+      ha-card-border-radius: "16px"
+      ha-card-border-width: "0px"
+      ha-card-box-shadow: "0 1px 4px rgba(0, 0, 0, 0.08)"
+    casa_escura:
+      primary-color: "#4FB3BF"
+      accent-color: "#F2B24A"
+      primary-text-color: "#EAF0F6"
+      secondary-text-color: "#9FB0C2"
+      disabled-text-color: "#6B7C8F"
+      primary-background-color: "#0E1726"
+      secondary-background-color: "#16263A"
+      lovelace-background: "linear-gradient(160deg, #0E1726 0%, #16263A 100%)"
+      card-background-color: "#1A2638"
+      ha-card-background: "rgba(255, 255, 255, 0.06)"
+      divider-color: "rgba(255, 255, 255, 0.10)"
+      ha-card-border-radius: "20px"
+      ha-card-border-width: "1px"
+      ha-card-border-color: "rgba(255, 255, 255, 0.08)"
+      ha-card-box-shadow: "0 8px 24px rgba(0, 0, 0, 0.25)"
+      app-header-background-color: "#0E1726"
+      app-header-text-color: "#EAF0F6"
+      sidebar-background-color: "#0E1726"
+      sidebar-text-color: "#9FB0C2"
+      sidebar-selected-text-color: "#4FB3BF"
+      sidebar-selected-icon-color: "#4FB3BF"
+      switch-checked-color: "#4FB3BF"
+      switch-unchecked-button-color: "#9FB0C2"
+      switch-unchecked-track-color: "#3A4A5E"
+      modes:
+        light:
+          primary-color: "#4FB3BF"
+        dark:
+          primary-color: "#4FB3BF"
+
+# ---------------------------------------------------------------------
+#  Chaves que representam o LOGO! 1
+#  m_ = marcador | q_ = saída | i_ = entrada de campo
+# ---------------------------------------------------------------------
+input_boolean:
+  m_sono:              { name: "M10 Sono" }
+  m_manha:             { name: "M11 Manhã" }
+  m_foco:              { name: "M12 Foco" }
+  m_calmante:          { name: "M13 Calmante" }
+  m_emergencia:        { name: "M14 Emergência" }
+  m_verificacao:       { name: "M15 Verificação" }
+  m_ev_gas:            { name: "M20 Evento gás" }
+  m_ev_panico:         { name: "M23 Evento pânico" }
+  m_calma_falhou:      { name: "M24 Calmante falhou" }
+  m_chuva:             { name: "M42 Chuva" }
+  m_persiana_fechada:  { name: "M46 Persiana fechada" }
+  m_falha_esp32:       { name: "M60 Falha de ESP32" }
+  q_gas:               { name: "Q3 Gás aberto" }
+  q_verde:             { name: "Q6 Semáforo verde" }
+  q_amarelo:           { name: "Q7 Semáforo amarelo" }
+  q_vermelho:          { name: "Q8 Semáforo vermelho" }
+  q_sirene:            { name: "Q13 Sirene externa" }
+  i_porta:             { name: "I3 Porta da entrada aberta" }
+  i_gas:               { name: "I6 Detector de gás" }
+  i_geladeira:         { name: "I8 Geladeira aberta" }
+  i_chuva:             { name: "I19 Sensor de chuva" }
+  # preferências do morador (aba Preferências)
+  registro_habilitado:   { name: "Guardar registro dos episódios" }
+  sugestoes_habilitadas: { name: "Receber sugestões de rotina" }
+  ciclo_habilitado:      { name: "Considerar meu ciclo nas sugestões" }
+
+input_datetime:
+  inicio_ultimo_ciclo:
+    name: "Início do último ciclo"
+    has_date: true
+    has_time: false
+
+input_number:
+  duracao_ciclo:
+    name: "Duração média do ciclo"
+    min: 20
+    max: 40
+    step: 1
+    initial: 28
+    unit_of_measurement: dias
+    mode: box
+
+# ---------------------------------------------------------------------
+#  Entidades exibidas nos painéis (mesmos nomes da casa real)
+# ---------------------------------------------------------------------
+template:
+  - binary_sensor:
+      - name: "Cena Sono"
+        state: "{{ is_state('input_boolean.m_sono', 'on') }}"
+      - name: "Cena Manhã"
+        state: "{{ is_state('input_boolean.m_manha', 'on') }}"
+      - name: "Cena Foco"
+        state: "{{ is_state('input_boolean.m_foco', 'on') }}"
+      - name: "Cena Calmante"
+        state: "{{ is_state('input_boolean.m_calmante', 'on') }}"
+      - name: "Emergência"
+        device_class: safety
+        state: "{{ is_state('input_boolean.m_emergencia', 'on') }}"
+      - name: "Verificação ativa"
+        state: "{{ is_state('input_boolean.m_verificacao', 'on') }}"
+      - name: "Calmante falhou"
+        state: "{{ is_state('input_boolean.m_calma_falhou', 'on') }}"
+      - name: "Falha de ESP32"
+        device_class: problem
+        state: "{{ is_state('input_boolean.m_falha_esp32', 'on') }}"
+      - name: "Chuva"
+        device_class: moisture
+        state: "{{ is_state('input_boolean.m_chuva', 'on') }}"
+      - name: "Persiana fechada"
+        state: "{{ is_state('input_boolean.m_persiana_fechada', 'on') }}"
+      - name: "Semáforo verde"
+        state: "{{ is_state('input_boolean.q_verde', 'on') }}"
+      - name: "Semáforo amarelo"
+        state: "{{ is_state('input_boolean.q_amarelo', 'on') }}"
+      - name: "Semáforo vermelho"
+        state: "{{ is_state('input_boolean.q_vermelho', 'on') }}"
+      - name: "Gás aberto"
+        state: "{{ is_state('input_boolean.q_gas', 'on') }}"
+      - name: "Sirene externa"
+        device_class: sound
+        state: "{{ is_state('input_boolean.q_sirene', 'on') }}"
+      - name: "Porta da entrada aberta"
+        device_class: door
+        state: "{{ is_state('input_boolean.i_porta', 'on') }}"
+      - name: "Detector de gás"
+        device_class: gas
+        state: "{{ is_state('input_boolean.i_gas', 'on') }}"
+      - name: "Geladeira aberta"
+        device_class: door
+        state: "{{ is_state('input_boolean.i_geladeira', 'on') }}"
+      - name: "Sensor de chuva"
+        device_class: moisture
+        state: "{{ is_state('input_boolean.i_chuva', 'on') }}"
+      # marcadores de evento, retidos até o reset da Emergência
+      - name: "Evento gás"
+        state: "{{ is_state('input_boolean.m_ev_gas', 'on') }}"
+      - name: "Evento pânico"
+        state: "{{ is_state('input_boolean.m_ev_panico', 'on') }}"
+      # eventos sem simulador de entrada neste ambiente
+      - name: "Evento fumaça"
+        state: "{{ false }}"
+      - name: "Evento queda"
+        state: "{{ false }}"
+      - name: "Evento vazamento"
+        state: "{{ false }}"
+
+  # pulso de vida dos nós ESP32: contador que muda a cada 5 s.
+  # A chave M60 simula a queda do nó da copa.
+  - trigger:
+      - platform: time_pattern
+        seconds: "/5"
+    sensor:
+      - name: "Vida ESP32 sala"
+        state: "{{ (now().timestamp() | int) % 65536 }}"
+      - name: "Vida ESP32 cozinha"
+        state: "{{ (now().timestamp() | int) % 65536 }}"
+      - name: "Vida ESP32 copa"
+        state: "{{ 0 if is_state('input_boolean.m_falha_esp32', 'on') else (now().timestamp() | int) % 65536 }}"
+      - name: "Vida ESP32 suíte"
+        state: "{{ (now().timestamp() | int) % 65536 }}"

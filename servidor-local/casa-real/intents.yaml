@@ -1,0 +1,44 @@
+# Respostas aos comandos de voz. As frases estão em
+# custom_sentences/pt-BR/cenas.yaml e o processamento é local.
+
+CenaSono:
+  action:
+    - service: script.cena_sono
+  speech:
+    text: "Boa noite. Vou conferir a casa."
+
+CenaManha:
+  action:
+    - service: script.cena_manha
+  speech:
+    text: "Bom dia."
+
+CenaFoco:
+  action:
+    - service: script.cena_foco
+  speech:
+    text: "Modo foco ativado."
+
+CenaCalmante:
+  action:
+    - service: script.cena_calmante
+  speech:
+    text: "Modo calma ativado."
+
+VerificarCasa:
+  action:
+    - service: script.verificar_casa
+  speech:
+    text: "Conferindo a casa. Veja a resposta no semáforo."
+
+PersianaSubir:
+  action:
+    - service: script.persiana_subir
+  speech:
+    text: "Subindo a persiana."
+
+PersianaDescer:
+  action:
+    - service: script.persiana_descer
+  speech:
+    text: "Descendo a persiana."

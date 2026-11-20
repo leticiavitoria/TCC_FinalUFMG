@@ -1,0 +1,175 @@
+aux_zera_p2:
+  sequence:
+    - service: input_boolean.turn_off
+      target: { entity_id: [input_boolean.m_sono, input_boolean.m_manha, input_boolean.m_foco, input_boolean.m_calmante] }
+
+# Verificação: resposta no semáforo por 10 s. Pode ser repetida a qualquer momento.
+aux_verifica:
+  mode: restart
+  sequence:
+    - service: input_boolean.turn_on
+      target: { entity_id: input_boolean.m_verificacao }
+    - choose:
+        - conditions: "{{ is_state('input_boolean.m_emergencia','on') }}"
+          sequence: []
+        - conditions: >
+            {{ is_state('input_boolean.i_porta','on') or is_state('input_boolean.i_gas','on')
+               or is_state('input_boolean.i_geladeira','on')
+               or (is_state('input_boolean.m_sono','on') and is_state('input_boolean.m_persiana_fechada','off')) }}
+          sequence:
+            - service: input_boolean.turn_off
+              target: { entity_id: input_boolean.q_verde }
+            - service: input_boolean.turn_on
+              target: { entity_id: input_boolean.q_amarelo }
+      default:
+        - service: input_boolean.turn_off
+          target: { entity_id: input_boolean.q_amarelo }
+        - service: input_boolean.turn_on
+          target: { entity_id: input_boolean.q_verde }
+    - delay: { seconds: 10 }
+    # fim da resposta: o semáforo volta ao estado da cena ativa
+    - choose:
+        - conditions: "{{ is_state('input_boolean.m_emergencia','on') }}"
+          sequence: []
+        - conditions: "{{ is_state('input_boolean.m_foco','on') }}"
+          sequence:
+            - service: input_boolean.turn_off
+              target: { entity_id: input_boolean.q_verde }
+            - service: input_boolean.turn_on
+              target: { entity_id: input_boolean.q_amarelo }
+      default:
+        - service: input_boolean.turn_off
+          target: { entity_id: input_boolean.q_amarelo }
+    - service: input_boolean.turn_off
+      target: { entity_id: input_boolean.m_verificacao }
+
+aux_persiana_desce:
+  sequence:
+    - condition: state
+      entity_id: input_boolean.m_emergencia
+      state: "off"
+    - delay: { seconds: 4 }
+    - service: input_boolean.turn_on
+      target: { entity_id: input_boolean.m_persiana_fechada }
+
+aux_persiana_sobe:
+  sequence:
+    - condition: template
+      value_template: "{{ is_state('input_boolean.m_chuva','off') or is_state('input_boolean.m_emergencia','on') }}"
+    - delay: { seconds: 4 }
+    - service: input_boolean.turn_off
+      target: { entity_id: input_boolean.m_persiana_fechada }
+
+# Resposta comum da Emergência, usada pelo botão de pânico e pelo detector de gás
+aux_emergencia:
+  sequence:
+    - service: script.aux_zera_p2
+    - service: input_boolean.turn_on
+      target: { entity_id: [input_boolean.m_emergencia, input_boolean.q_vermelho, input_boolean.q_sirene] }
+    - service: input_boolean.turn_off
+      target: { entity_id: [input_boolean.q_verde, input_boolean.q_amarelo, input_boolean.q_gas] }
+    - service: script.aux_persiana_sobe
+
+cena_sono:
+  alias: Boa noite
+  sequence:
+    - condition: state
+      entity_id: input_boolean.m_emergencia
+      state: "off"
+    - service: script.aux_zera_p2
+    - service: input_boolean.turn_on
+      target: { entity_id: input_boolean.m_sono }
+    - service: input_boolean.turn_off
+      target: { entity_id: input_boolean.q_gas }
+    - service: script.aux_persiana_desce
+    - delay: { seconds: 1 }
+    - service: script.turn_on
+      target: { entity_id: script.aux_verifica }
+
+cena_manha:
+  alias: Bom dia
+  sequence:
+    - condition: state
+      entity_id: input_boolean.m_sono
+      state: "on"
+    - service: script.aux_zera_p2
+    - service: input_boolean.turn_on
+      target: { entity_id: [input_boolean.m_manha, input_boolean.q_gas, input_boolean.q_verde] }
+    - service: input_boolean.turn_off
+      target: { entity_id: input_boolean.q_amarelo }
+    - service: script.aux_persiana_sobe
+
+cena_foco:
+  alias: Modo foco
+  sequence:
+    - condition: state
+      entity_id: input_boolean.m_emergencia
+      state: "off"
+    - service: script.aux_zera_p2
+    - service: input_boolean.turn_on
+      target: { entity_id: [input_boolean.m_foco, input_boolean.q_amarelo] }
+    - service: input_boolean.turn_off
+      target: { entity_id: input_boolean.q_verde }
+
+cena_calmante:
+  alias: Modo calma
+  sequence:
+    - condition: state
+      entity_id: input_boolean.m_emergencia
+      state: "off"
+    - service: script.aux_zera_p2
+    - service: input_boolean.turn_on
+      target: { entity_id: [input_boolean.m_calmante, input_boolean.q_verde] }
+    - service: input_boolean.turn_off
+      target: { entity_id: input_boolean.q_amarelo }
+
+verificar_casa:
+  alias: Verificar a casa
+  sequence:
+    - service: script.turn_on
+      target: { entity_id: script.aux_verifica }
+
+persiana_subir:
+  alias: Subir persiana
+  sequence: [{ service: script.aux_persiana_sobe }]
+
+persiana_descer:
+  alias: Descer persiana
+  sequence: [{ service: script.aux_persiana_desce }]
+
+chuva_comeca:
+  alias: Simular chuva
+  sequence:
+    - service: script.turn_off
+      target: { entity_id: script.chuva_para }
+    - service: input_boolean.turn_on
+      target: { entity_id: [input_boolean.i_chuva, input_boolean.m_chuva] }
+    - service: script.aux_persiana_desce
+
+chuva_para:
+  alias: Simular fim da chuva
+  mode: restart
+  sequence:
+    - service: input_boolean.turn_off
+      target: { entity_id: input_boolean.i_chuva }
+    - delay: { seconds: 10 }
+    - service: input_boolean.turn_off
+      target: { entity_id: input_boolean.m_chuva }
+
+botao_panico:
+  alias: Botão de pânico (2 s)
+  sequence:
+    - service: input_boolean.turn_on
+      target: { entity_id: input_boolean.m_ev_panico }
+    - service: script.aux_emergencia
+
+# Como no CLP: com o detector de gás ainda ativo, a Emergência não encerra.
+# O gás continua fechado depois do reset e só reabre na cena Manhã.
+reset_emergencia:
+  alias: Reset da Emergência (5 s)
+  sequence:
+    - condition: state
+      entity_id: input_boolean.i_gas
+      state: "off"
+    - service: input_boolean.turn_off
+      target: { entity_id: [input_boolean.m_emergencia, input_boolean.q_vermelho, input_boolean.q_sirene, input_boolean.m_ev_gas, input_boolean.m_ev_panico] }

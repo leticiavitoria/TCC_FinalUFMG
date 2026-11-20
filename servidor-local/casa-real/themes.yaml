@@ -1,0 +1,31 @@
+# Tema usado pelos painéis do morador e do cuidador
+casa_escura:
+  primary-color: "#4FB3BF"
+  accent-color: "#F2B24A"
+  primary-text-color: "#EAF0F6"
+  secondary-text-color: "#9FB0C2"
+  disabled-text-color: "#6B7C8F"
+  primary-background-color: "#0E1726"
+  secondary-background-color: "#16263A"
+  lovelace-background: "linear-gradient(160deg, #0E1726 0%, #16263A 100%)"
+  card-background-color: "#1A2638"
+  ha-card-background: "rgba(255, 255, 255, 0.06)"
+  divider-color: "rgba(255, 255, 255, 0.10)"
+  ha-card-border-radius: "20px"
+  ha-card-border-width: "1px"
+  ha-card-border-color: "rgba(255, 255, 255, 0.08)"
+  ha-card-box-shadow: "0 8px 24px rgba(0, 0, 0, 0.25)"
+  app-header-background-color: "#0E1726"
+  app-header-text-color: "#EAF0F6"
+  sidebar-background-color: "#0E1726"
+  sidebar-text-color: "#9FB0C2"
+  sidebar-selected-text-color: "#4FB3BF"
+  sidebar-selected-icon-color: "#4FB3BF"
+  switch-checked-color: "#4FB3BF"
+  switch-unchecked-button-color: "#9FB0C2"
+  switch-unchecked-track-color: "#3A4A5E"
+  modes:
+    light:
+      primary-color: "#4FB3BF"
+    dark:
+      primary-color: "#4FB3BF"

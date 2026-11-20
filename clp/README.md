@@ -54,3 +54,5 @@ Os programas originais (`TCC.lsc` e `TCC_Logo2.lsc`) abrem no LOGO! Soft Comfort
 ## Comunicação Modbus TCP
 
 O LOGO! 1 é servidor Modbus TCP na porta 503. Os nós ESP32 escrevem os registradores HR100 a HR112 (eventos e sensores) e HR120 a HR127 (pulso de vida), e o servidor local escreve os comandos HR130 a HR136 como pulsos de 1 s. No programa, cada registrador de comando é lido por um bloco Network Input em memória de variáveis (VM): o registrador HRn corresponde ao bit V(2n+1).0, de modo que HR130 é V261.0 e HR136 é V273.0.
+
+No mapa Modbus do LOGO!, com endereços contados a partir de zero, o marcador Mn é o coil 8255 + n, a saída Qn é o coil 8191 + n e a entrada In é a entrada discreta n - 1.

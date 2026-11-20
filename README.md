@@ -1,4 +1,4 @@
-# Automação residencial para moradores neurodivergentes
+# Projeto de Automação Residencial Integrado ao Projeto Elétrico Para Moradores Neurodivergentes
 
 Projeto de um sistema de automação residencial integrado ao projeto elétrico de uma residência, pensado a partir das necessidades ambientais de pessoas com TDAH, TOC e TEA e das condições associadas de ansiedade e epilepsia. Trabalho de Conclusão de Curso em Engenharia de Controle e Automação na Universidade Federal de Minas Gerais (UFMG), 2026.
 
@@ -48,6 +48,8 @@ Todo o sistema pode ser testado em um notebook comum:
 1. Abra os programas da pasta `clp/` no LOGO! Soft Comfort V8.4 e rode a co-simulação dos dois controladores.
 2. Siga o roteiro de `testes/README.md` para executar os 30 casos.
 3. Para ver os painéis, rode o Home Assistant em máquina virtual com a configuração de `servidor-local/simulacao/`.
+
+![Painel do morador na simulação](servidor-local/paineis/painel_morador.png)
 
 ## Estado do projeto
 

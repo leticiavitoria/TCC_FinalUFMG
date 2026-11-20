@@ -2,7 +2,7 @@
 
 A lógica dos dois controladores foi verificada em co-simulação no LOGO! Soft Comfort V8.4, com 30 casos de teste, todos aprovados. Os temporizadores longos foram reduzidos durante o ensaio (por exemplo, a confirmação da chuva de 30 s para 3 s e o pulso da persiana de 40 s para 4 s).
 
-Cada pasta `TC-xx/` guarda as capturas de tela do estado final do caso no simulador.
+As pastas `TC-xx/` guardam as capturas de tela do estado final dos casos TC-01 a TC-13 e TC-25 a TC-30 no simulador. Os casos TC-14 a TC-24 têm o resultado registrado na tabela abaixo.
 
 ## Plano e resultados (Quadro E.1 do volume principal)
 

@@ -1,0 +1,55 @@
+- id: sim_gas_dispara_emergencia
+  alias: Simulação - detector de gás dispara a Emergência
+  trigger:
+    - platform: state
+      entity_id: input_boolean.i_gas
+      from: "off"
+      to: "on"
+  action:
+    - service: input_boolean.turn_on
+      target: { entity_id: input_boolean.m_ev_gas }
+    - service: script.aux_emergencia
+
+- id: sim_aviso_emergencia
+  alias: Simulação - aviso de Emergência
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.emergencia
+      from: "off"
+      to: "on"
+  action:
+    - service: persistent_notification.create
+      data:
+        notification_id: emergencia
+        title: "Emergência na casa"
+        message: >
+          Cena de Emergência ativa.
+          Motivo: {{ 'vazamento de gás' if is_state('input_boolean.m_ev_gas','on') else 'botão de pânico' }}.
+          No sistema real, este aviso é enviado ao cuidador por SMS pelo controlador.
+
+- id: sim_fim_emergencia
+  alias: Simulação - encerra o aviso no reset
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.emergencia
+      from: "on"
+      to: "off"
+  action:
+    - service: persistent_notification.dismiss
+      data:
+        notification_id: emergencia
+
+- id: sim_aviso_falha_esp32
+  alias: Simulação - aviso de falha de nó ESP32
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.falha_de_esp32
+      from: "off"
+      to: "on"
+      for: "00:00:10"
+  action:
+    - service: persistent_notification.create
+      data:
+        notification_id: falha_esp32
+        title: "Nó de monitoramento sem resposta"
+        message: "Um nó parou de responder. A detecção de queda está indisponível nesse cômodo."

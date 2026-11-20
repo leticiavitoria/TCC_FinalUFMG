@@ -1,0 +1,618 @@
+title: Acompanhamento
+views:
+  - title: Agora
+    path: agora
+    type: sections
+    theme: casa_escura
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: markdown
+            grid_options:
+              columns: full
+            content: |
+              ## {{ now().strftime('%H:%M') }}
+              # {% if is_state('binary_sensor.emergencia','on') %}Emergência na casa{% elif is_state('binary_sensor.cena_sono','on') %}Dormindo{% elif is_state('binary_sensor.cena_manha','on') %}Acordando{% elif is_state('binary_sensor.cena_foco','on') %}Concentrado{% elif is_state('binary_sensor.cena_calmante','on') %}Em modo Calma{% else %}Sem cena ativa{% endif %}
+              {% if is_state('binary_sensor.emergencia','on') %}Motivo: {% if is_state('binary_sensor.evento_gas','on') %}vazamento de gás{% elif is_state('binary_sensor.evento_panico','on') %}botão de pânico{% elif is_state('binary_sensor.evento_fumaca','on') %}fumaça ou chama{% elif is_state('binary_sensor.evento_queda','on') %}queda ou crise{% else %}detecção{% endif %}. A cena só encerra com o reset no botão de pânico.{% elif is_state('binary_sensor.calmante_falhou','on') %}O ruído persistiu depois da cena Calma. Não é emergência, mas vale ligar.{% elif is_state('binary_sensor.falha_de_esp32','on') %}Um sensor de queda parou de responder. A detecção está indisponível nesse cômodo.{% else %}Tudo dentro do esperado.{% endif %}
+            card_mod:
+              style:
+                ha-markdown $: |
+                  h2 {
+                    float: right;
+                    font-size: 46px !important;
+                    font-weight: 700;
+                    line-height: 1.1;
+                    margin: 0;
+                  }
+                  h1 {
+                    font-size: 32px !important;
+                    font-weight: 700;
+                    line-height: 1.15;
+                    margin: 0 0 6px 0;
+                  }
+                  p {
+                    font-size: 16px !important;
+                    margin: 0;
+                    opacity: 0.92;
+                  }
+                .: |
+                  ha-card {
+                    background: {% if is_state('binary_sensor.emergencia','on') %}linear-gradient(135deg, #D64545 0%, #8E1F1F 100%){% elif is_state('binary_sensor.calmante_falhou','on') or is_state('binary_sensor.falha_de_esp32','on') %}linear-gradient(135deg, #F2B24A 0%, #C97B16 100%){% else %}linear-gradient(135deg, #2C6E7A 0%, #173F4A 100%){% endif %};
+                    color: #FFFFFF;
+                    --primary-text-color: #FFFFFF;
+                    border: none;
+                    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+                    padding: 8px 10px;
+                  }
+          - type: heading
+            heading: SEMÁFORO
+            heading_style: subtitle
+          - type: picture-elements
+            image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NjAgMjAwIiB3aWR0aD0iNTYwIiBoZWlnaHQ9IjIwMCI+CjxyZWN0IHg9IjIiIHk9IjIiIHdpZHRoPSI1NTYiIGhlaWdodD0iMTk2IiByeD0iMzAiIGZpbGw9IiMxMjFCMjgiIHN0cm9rZT0iIzJBMzc0OCIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxjaXJjbGUgY3g9IjExMCIgY3k9IjgyIiByPSI0NiIgZmlsbD0iIzI2MzIzRiIvPjxjaXJjbGUgY3g9IjI4MCIgY3k9IjgyIiByPSI0NiIgZmlsbD0iIzI2MzIzRiIvPjxjaXJjbGUgY3g9IjQ1MCIgY3k9IjgyIiByPSI0NiIgZmlsbD0iIzI2MzIzRiIvPgo8ZyBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzhGQTBCMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Cjx0ZXh0IHg9IjExMCIgeT0iMTcwIj5UdWRvIGNlcnRvPC90ZXh0Pjx0ZXh0IHg9IjI4MCIgeT0iMTcwIj5BdGVuw6fDo288L3RleHQ+PHRleHQgeD0iNDUwIiB5PSIxNzAiPkVtZXJnw6puY2lhPC90ZXh0PjwvZz48L3N2Zz4=
+            grid_options:
+              columns: full
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                }
+            elements:
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.semaforo_verde
+                    state: "on"
+                elements:
+                  - type: image
+                    image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgMTYwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE2MCI+CjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyIgY3g9IjQwJSIgY3k9IjM1JSIgcj0iNzAlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM3QkYwQTgiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMyMkI4NjMiLz48L3JhZGlhbEdyYWRpZW50Pgo8ZmlsdGVyIGlkPSJiIiB4PSItNTAlIiB5PSItNTAlIiB3aWR0aD0iMjAwJSIgaGVpZ2h0PSIyMDAlIj48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI5Ii8+PC9maWx0ZXI+PC9kZWZzPgo8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSI2MiIgZmlsbD0iIzIyQjg2MyIgb3BhY2l0eT0iMC41NSIgZmlsdGVyPSJ1cmwoI2IpIi8+PGNpcmNsZSBjeD0iODAiIGN5PSI4MCIgcj0iNDYiIGZpbGw9InVybCgjZykiLz48L3N2Zz4=
+                    tap_action:
+                      action: none
+                    style:
+                      left: 19.6%
+                      top: 41%
+                      width: 28.6%
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.semaforo_amarelo
+                    state: "on"
+                elements:
+                  - type: image
+                    image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgMTYwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE2MCI+CjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyIgY3g9IjQwJSIgY3k9IjM1JSIgcj0iNzAlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGRkUwOEEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGMkE5MUUiLz48L3JhZGlhbEdyYWRpZW50Pgo8ZmlsdGVyIGlkPSJiIiB4PSItNTAlIiB5PSItNTAlIiB3aWR0aD0iMjAwJSIgaGVpZ2h0PSIyMDAlIj48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI5Ii8+PC9maWx0ZXI+PC9kZWZzPgo8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSI2MiIgZmlsbD0iI0YyQTkxRSIgb3BhY2l0eT0iMC41NSIgZmlsdGVyPSJ1cmwoI2IpIi8+PGNpcmNsZSBjeD0iODAiIGN5PSI4MCIgcj0iNDYiIGZpbGw9InVybCgjZykiLz48L3N2Zz4=
+                    tap_action:
+                      action: none
+                    style:
+                      left: 50.0%
+                      top: 41%
+                      width: 28.6%
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.semaforo_vermelho
+                    state: "on"
+                elements:
+                  - type: image
+                    image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgMTYwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE2MCI+CjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyIgY3g9IjQwJSIgY3k9IjM1JSIgcj0iNzAlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNGRjlBOEYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNFMDM5MkIiLz48L3JhZGlhbEdyYWRpZW50Pgo8ZmlsdGVyIGlkPSJiIiB4PSItNTAlIiB5PSItNTAlIiB3aWR0aD0iMjAwJSIgaGVpZ2h0PSIyMDAlIj48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI5Ii8+PC9maWx0ZXI+PC9kZWZzPgo8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSI2MiIgZmlsbD0iI0UwMzkyQiIgb3BhY2l0eT0iMC41NSIgZmlsdGVyPSJ1cmwoI2IpIi8+PGNpcmNsZSBjeD0iODAiIGN5PSI4MCIgcj0iNDYiIGZpbGw9InVybCgjZykiLz48L3N2Zz4=
+                    tap_action:
+                      action: none
+                    style:
+                      left: 80.4%
+                      top: 41%
+                      width: 28.6%
+          - type: heading
+            heading: ATUADORES
+            heading_style: subtitle
+          - type: custom:mushroom-template-card
+            primary: Sirene
+            secondary: "{{ 'Ligada' if is_state('binary_sensor.sirene_externa','on') else 'Desligada' }}"
+            icon: mdi:bullhorn
+            color: "{{ 'red' if is_state('binary_sensor.sirene_externa','on') else 'grey' }}"
+            tap_action:
+              action: none
+            grid_options:
+              columns: 4
+          - type: custom:mushroom-template-card
+            primary: Gás
+            secondary: "{{ 'Aberto' if is_state('binary_sensor.gas_aberto','on') else 'Fechado' }}"
+            icon: mdi:valve
+            color: "{{ 'teal' if is_state('binary_sensor.gas_aberto','on') else 'grey' }}"
+            tap_action:
+              action: none
+            grid_options:
+              columns: 4
+          - type: custom:mushroom-template-card
+            primary: Persiana
+            secondary: "{{ 'Fechada' if is_state('binary_sensor.persiana_fechada','on') else 'Aberta' }}"
+            icon: mdi:blinds
+            color: "{{ 'indigo' if is_state('binary_sensor.persiana_fechada','on') else 'teal' }}"
+            tap_action:
+              action: none
+            grid_options:
+              columns: 4
+      - type: grid
+        cards:
+          - type: heading
+            heading: A CASA AGORA
+            heading_style: subtitle
+          - type: picture-elements
+            image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MzQgMTE3MCIgd2lkdGg9IjgzNCIgaGVpZ2h0PSIxMTcwIj4KPHJlY3Qgd2lkdGg9IjgzNCIgaGVpZ2h0PSIxMTcwIiBmaWxsPSIjRjRGNkY3Ii8+CjxyZWN0IHg9IjcyIiB5PSIzOCIgd2lkdGg9Ijc1MiIgaGVpZ2h0PSIxMDU3IiBmaWxsPSIjM0Q0RjVDIiAvPgo8cmVjdCB4PSI5OSIgeT0iNjUiIHdpZHRoPSIzNjUiIGhlaWdodD0iMTY3IiBmaWxsPSIjRUFGM0Y1IiAvPgo8cmVjdCB4PSI5OSIgeT0iMjQ1IiB3aWR0aD0iMzY1IiBoZWlnaHQ9IjMwMyIgZmlsbD0iI0YzRUVGOCIgLz4KPHJlY3QgeD0iOTkiIHk9IjU3MCIgd2lkdGg9IjIzNSIgaGVpZ2h0PSIxNzIiIGZpbGw9IiNFQUYzRjUiIC8+CjxyZWN0IHg9IjM1MiIgeT0iNTcwIiB3aWR0aD0iMTEyIiBoZWlnaHQ9IjE3MiIgZmlsbD0iI0Y3RjdGMiIgLz4KPHJlY3QgeD0iOTkiIHk9Ijc1NyIgd2lkdGg9IjM2NSIgaGVpZ2h0PSIzMTEiIGZpbGw9IiNGM0VFRjgiIC8+CjxyZWN0IHg9IjQ4MiIgeT0iNjUiIHdpZHRoPSIzMTkiIGhlaWdodD0iMzYwIiBmaWxsPSIjRkZGNEUzIiAvPgo8cmVjdCB4PSI0ODIiIHk9IjQzOCIgd2lkdGg9IjMxOSIgaGVpZ2h0PSIzMDQiIGZpbGw9IiNGRkY5RUUiIC8+CjxyZWN0IHg9IjQ4MiIgeT0iNzU3IiB3aWR0aD0iMzE5IiBoZWlnaHQ9IjMxMSIgZmlsbD0iI0VERjVFQyIgLz4KPHJlY3QgeD0iNDk2IiB5PSIzMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjM2IiBmaWxsPSIjRjRGNkY3IiAvPgo8cmVjdCB4PSI0NjQiIHk9IjE1MiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjY4IiBmaWxsPSIjRkZGNEUzIiAvPgo8cmVjdCB4PSIzNjkiIHk9IjU0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjIyIiBmaWxsPSIjRjdGN0YyIiAvPgo8cmVjdCB4PSIzMzQiIHk9IjY2MiIgd2lkdGg9IjE4IiBoZWlnaHQ9Ijc4IiBmaWxsPSIjRjdGN0YyIiAvPgo8cmVjdCB4PSIzNjkiIHk9Ijc0MiIgd2lkdGg9IjgwIiBoZWlnaHQ9IjE1IiBmaWxsPSIjRjdGN0YyIiAvPgo8cmVjdCB4PSI0NjQiIHk9IjU3MCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjgyIiBmaWxsPSIjRkZGOUVFIiAvPgo8cmVjdCB4PSI1ODkiIHk9IjQyNSIgd2lkdGg9IjExNSIgaGVpZ2h0PSIxMyIgZmlsbD0iI0ZGRjlFRSIgLz4KPHJlY3QgeD0iNDgyIiB5PSI3NDIiIHdpZHRoPSIxMDIiIGhlaWdodD0iMTUiIGZpbGw9IiNFREY1RUMiIC8+CjxyZWN0IHg9IjUwMSIgeT0iMTA2OCIgd2lkdGg9Ijc1IiBoZWlnaHQ9IjM0IiBmaWxsPSIjRjRGNkY3IiAvPgo8cmVjdCB4PSI4MCIgeT0iMTAwIiB3aWR0aD0iMTEiIGhlaWdodD0iOTAiIGZpbGw9IiM4RUM1RDYiIC8+CjxyZWN0IHg9IjgwIiB5PSIzMjUiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxNDUiIGZpbGw9IiM4RUM1RDYiIC8+CjxyZWN0IHg9IjgwIiB5PSI2MTAiIHdpZHRoPSIxMSIgaGVpZ2h0PSI5NSIgZmlsbD0iIzhFQzVENiIgLz4KPHJlY3QgeD0iODAiIHk9Ijg0MCIgd2lkdGg9IjExIiBoZWlnaHQ9IjE0MCIgZmlsbD0iIzhFQzVENiIgLz4KPHJlY3QgeD0iODA5IiB5PSIyNTAiIHdpZHRoPSI3IiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzhFQzVENiIgLz4KPHJlY3QgeD0iODA5IiB5PSI1MTAiIHdpZHRoPSI3IiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzhFQzVENiIgLz4KPHRleHQgeD0iMjgxIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmb250LXdlaWdodD0iNjAwIiBmaWxsPSIjNUM2Qjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7DgXJlYSBkZSBzZXJ2acOnbzwvdGV4dD4KPHRleHQgeD0iMjgxIiB5PSI0MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmb250LXdlaWdodD0iNjAwIiBmaWxsPSIjNUM2Qjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5RdWFydG8gc29jaWFsPC90ZXh0Pgo8dGV4dCB4PSIyMTYiIHk9IjY2MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSI2MDAiIGZpbGw9IiM1QzZCNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJhbmhlaXJvPC90ZXh0Pgo8dGV4dCB4PSI0MDgiIHk9IjY2MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZvbnQtd2VpZ2h0PSI2MDAiIGZpbGw9IiM1QzZCNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNpcmN1bGHDp8OjbzwvdGV4dD4KPHRleHQgeD0iMjgxIiB5PSI5MTUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmb250LXdlaWdodD0iNjAwIiBmaWxsPSIjNUM2Qjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5RdWFydG8gc3XDrXRlPC90ZXh0Pgo8dGV4dCB4PSI2NDEiIHk9IjI1MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSI2MDAiIGZpbGw9IiM1QzZCNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNvemluaGE8L3RleHQ+Cjx0ZXh0IHg9IjY0MSIgeT0iNTk1IiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjYwMCIgZmlsbD0iIzVDNkI3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q29wYTwvdGV4dD4KPHRleHQgeD0iNjQxIiB5PSI5MTUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmb250LXdlaWdodD0iNjAwIiBmaWxsPSIjNUM2Qjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TYWxhIGRlIGVzdGFyPC90ZXh0Pgo8dGV4dCB4PSI1MzgiIHk9IjExMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNUM2Qjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5FbnRyYWRhPC90ZXh0Pgo8L3N2Zz4=
+            grid_options:
+              columns: full
+            card_mod:
+              style: |
+                ha-card {
+                  border: none;
+                  overflow: hidden;
+                  max-width: 380px;
+                  margin: 0 auto;
+                }
+            elements:
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.detector_de_gas
+                    state: "on"
+                elements:
+                  - type: image
+                    image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMTkgMzYwIiB3aWR0aD0iMzE5IiBoZWlnaHQ9IjM2MCI+PHJlY3Qgd2lkdGg9IjMxOSIgaGVpZ2h0PSIzNjAiIGZpbGw9IiNFMDM5MkIiPjxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9Im9wYWNpdHkiIHZhbHVlcz0iMC4xNTswLjU7MC4xNSIgZHVyPSIxLjRzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPjwvcmVjdD48L3N2Zz4=
+                    tap_action:
+                      action: none
+                    style:
+                      left: 76.9%
+                      top: 20.9%
+                      width: 38.2%
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.porta_da_entrada_aberta
+                    state: "on"
+                  - entity: binary_sensor.emergencia
+                    state: "off"
+                elements:
+                  - type: image
+                    image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMTkgMzExIiB3aWR0aD0iMzE5IiBoZWlnaHQ9IjMxMSI+PHJlY3Qgd2lkdGg9IjMxOSIgaGVpZ2h0PSIzMTEiIGZpbGw9IiNGMkE5MUUiPjxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9Im9wYWNpdHkiIHZhbHVlcz0iMC4xNTswLjU7MC4xNSIgZHVyPSIxLjRzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPjwvcmVjdD48L3N2Zz4=
+                    tap_action:
+                      action: none
+                    style:
+                      left: 76.9%
+                      top: 78.0%
+                      width: 38.2%
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.emergencia
+                    state: "on"
+                elements:
+                  - type: image
+                    image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MzQgMTE3MCIgd2lkdGg9IjgzNCIgaGVpZ2h0PSIxMTcwIj48cmVjdCB4PSI2OCIgeT0iMzQiIHdpZHRoPSI3NjAiIGhlaWdodD0iMTA2NSIgcng9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0UwMzkyQiIgc3Ryb2tlLXdpZHRoPSIxMCI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0ib3BhY2l0eSIgdmFsdWVzPSIwLjI1OzE7MC4yNSIgZHVyPSIxLjJzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPjwvcmVjdD48L3N2Zz4=
+                    tap_action:
+                      action: none
+                    style:
+                      left: 50.0%
+                      top: 50.0%
+                      width: 100.0%
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.porta_da_entrada_aberta
+                    state: "on"
+                elements:
+                  - type: icon
+                    icon: mdi:door-open
+                    title: Porta da entrada aberta
+                    style:
+                      left: 64.5%
+                      top: 89.3%
+                      color: "#FFFFFF"
+                      background: "#D98A00"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 0 0 5px #D98A0055, 0 2px 8px rgba(0, 0, 0, 0.45)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.porta_da_entrada_aberta
+                    state: "off"
+                elements:
+                  - type: icon
+                    icon: mdi:door-closed
+                    title: Porta da entrada fechada
+                    style:
+                      left: 64.5%
+                      top: 89.3%
+                      color: "#2E9E5B"
+                      background: "#FFFFFF"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 1px 5px rgba(30, 42, 50, 0.35)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.geladeira_aberta
+                    state: "on"
+                elements:
+                  - type: icon
+                    icon: mdi:fridge
+                    title: Geladeira aberta
+                    style:
+                      left: 91.6%
+                      top: 31.6%
+                      color: "#FFFFFF"
+                      background: "#D98A00"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 0 0 5px #D98A0055, 0 2px 8px rgba(0, 0, 0, 0.45)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.geladeira_aberta
+                    state: "off"
+                elements:
+                  - type: icon
+                    icon: mdi:fridge
+                    title: Geladeira fechada
+                    style:
+                      left: 91.6%
+                      top: 31.6%
+                      color: "#8A97A0"
+                      background: "#FFFFFF"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 1px 5px rgba(30, 42, 50, 0.35)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.detector_de_gas
+                    state: "on"
+                elements:
+                  - type: icon
+                    icon: mdi:gas-cylinder
+                    title: Vazamento de gás detectado
+                    style:
+                      left: 73.0%
+                      top: 9.4%
+                      color: "#FFFFFF"
+                      background: "#C0392B"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 0 0 5px #C0392B55, 0 2px 8px rgba(0, 0, 0, 0.45)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.detector_de_gas
+                    state: "off"
+                elements:
+                  - type: icon
+                    icon: mdi:gas-cylinder
+                    title: Detector de gás normal
+                    style:
+                      left: 73.0%
+                      top: 9.4%
+                      color: "#2E9E5B"
+                      background: "#FFFFFF"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 1px 5px rgba(30, 42, 50, 0.35)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.gas_aberto
+                    state: "on"
+                elements:
+                  - type: icon
+                    icon: mdi:valve-open
+                    title: Registro do gás aberto
+                    style:
+                      left: 85.6%
+                      top: 9.4%
+                      color: "#1F6F78"
+                      background: "#FFFFFF"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 1px 5px rgba(30, 42, 50, 0.35)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.gas_aberto
+                    state: "off"
+                elements:
+                  - type: icon
+                    icon: mdi:valve-closed
+                    title: Registro do gás fechado
+                    style:
+                      left: 85.6%
+                      top: 9.4%
+                      color: "#FFFFFF"
+                      background: "#3D4F5C"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 0 0 5px #3D4F5C55, 0 2px 8px rgba(0, 0, 0, 0.45)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.persiana_fechada
+                    state: "on"
+                elements:
+                  - type: icon
+                    icon: mdi:blinds
+                    title: Persiana fechada
+                    style:
+                      left: 14.9%
+                      top: 77.8%
+                      color: "#FFFFFF"
+                      background: "#3D4F5C"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 0 0 5px #3D4F5C55, 0 2px 8px rgba(0, 0, 0, 0.45)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.persiana_fechada
+                    state: "off"
+                elements:
+                  - type: icon
+                    icon: mdi:blinds-open
+                    title: Persiana aberta
+                    style:
+                      left: 14.9%
+                      top: 77.8%
+                      color: "#1F6F78"
+                      background: "#FFFFFF"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 1px 5px rgba(30, 42, 50, 0.35)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.chuva
+                    state: "on"
+                elements:
+                  - type: icon
+                    icon: mdi:weather-pouring
+                    title: Chovendo
+                    style:
+                      left: 4.1%
+                      top: 70.9%
+                      color: "#FFFFFF"
+                      background: "#216EBE"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 0 0 5px #216EBE55, 0 2px 8px rgba(0, 0, 0, 0.45)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.chuva
+                    state: "off"
+                elements:
+                  - type: icon
+                    icon: mdi:weather-cloudy
+                    title: Sem chuva
+                    style:
+                      left: 4.1%
+                      top: 70.9%
+                      color: "#8A97A0"
+                      background: "#FFFFFF"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 1px 5px rgba(30, 42, 50, 0.35)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.sirene_externa
+                    state: "on"
+                elements:
+                  - type: icon
+                    icon: mdi:bullhorn
+                    title: Sirene ligada
+                    style:
+                      left: 85.6%
+                      top: 95.7%
+                      color: "#FFFFFF"
+                      background: "#C0392B"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 0 0 5px #C0392B55, 0 2px 8px rgba(0, 0, 0, 0.45)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.sirene_externa
+                    state: "off"
+                elements:
+                  - type: icon
+                    icon: mdi:bullhorn-outline
+                    title: Sirene desligada
+                    style:
+                      left: 85.6%
+                      top: 95.7%
+                      color: "#8A97A0"
+                      background: "#FFFFFF"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 1px 5px rgba(30, 42, 50, 0.35)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.falha_de_esp32
+                    state: "on"
+                elements:
+                  - type: icon
+                    icon: mdi:access-point-off
+                    title: Nó de monitoramento sem resposta
+                    style:
+                      left: 67.6%
+                      top: 41.9%
+                      color: "#FFFFFF"
+                      background: "#C0392B"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 0 0 5px #C0392B55, 0 2px 8px rgba(0, 0, 0, 0.45)"
+                      "--mdc-icon-size": 30px
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.falha_de_esp32
+                    state: "off"
+                elements:
+                  - type: icon
+                    icon: mdi:access-point
+                    title: Nó de monitoramento ativo
+                    style:
+                      left: 67.6%
+                      top: 41.9%
+                      color: "#2E9E5B"
+                      background: "#FFFFFF"
+                      border-radius: 50%
+                      padding: 7px
+                      box-shadow: "0 1px 5px rgba(30, 42, 50, 0.35)"
+                      "--mdc-icon-size": 30px
+      - type: grid
+        cards:
+          - type: heading
+            heading: EVENTOS RETIDOS ATÉ O RESET
+            heading_style: subtitle
+          - type: custom:mushroom-template-card
+            primary: Gás
+            secondary: "{{ 'Ocorreu' if is_state('binary_sensor.evento_gas','on') else 'Sem ocorrência' }}"
+            icon: mdi:gas-cylinder
+            color: "{{ 'white' if is_state('binary_sensor.evento_gas','on') else 'grey' }}"
+            tap_action:
+              action: none
+            grid_options:
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  background: {{ 'linear-gradient(145deg, #D64545, #8E1F1F)' if is_state('binary_sensor.evento_gas','on') else 'rgba(255, 255, 255, 0.06)' }};
+                  --primary-text-color: #FFFFFF;
+                  --secondary-text-color: {{ 'rgba(255, 255, 255, 0.9)' if is_state('binary_sensor.evento_gas','on') else '#9FB0C2' }};
+                }
+          - type: custom:mushroom-template-card
+            primary: Botão de pânico
+            secondary: "{{ 'Ocorreu' if is_state('binary_sensor.evento_panico','on') else 'Sem ocorrência' }}"
+            icon: mdi:alarm-light
+            color: "{{ 'white' if is_state('binary_sensor.evento_panico','on') else 'grey' }}"
+            tap_action:
+              action: none
+            grid_options:
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  background: {{ 'linear-gradient(145deg, #D64545, #8E1F1F)' if is_state('binary_sensor.evento_panico','on') else 'rgba(255, 255, 255, 0.06)' }};
+                  --primary-text-color: #FFFFFF;
+                  --secondary-text-color: {{ 'rgba(255, 255, 255, 0.9)' if is_state('binary_sensor.evento_panico','on') else '#9FB0C2' }};
+                }
+          - type: custom:mushroom-template-card
+            primary: Fumaça ou chama
+            secondary: "{{ 'Ocorreu' if is_state('binary_sensor.evento_fumaca','on') else 'Sem ocorrência' }}"
+            icon: mdi:fire
+            color: "{{ 'white' if is_state('binary_sensor.evento_fumaca','on') else 'grey' }}"
+            tap_action:
+              action: none
+            grid_options:
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  background: {{ 'linear-gradient(145deg, #D64545, #8E1F1F)' if is_state('binary_sensor.evento_fumaca','on') else 'rgba(255, 255, 255, 0.06)' }};
+                  --primary-text-color: #FFFFFF;
+                  --secondary-text-color: {{ 'rgba(255, 255, 255, 0.9)' if is_state('binary_sensor.evento_fumaca','on') else '#9FB0C2' }};
+                }
+          - type: custom:mushroom-template-card
+            primary: Queda ou crise
+            secondary: "{{ 'Ocorreu' if is_state('binary_sensor.evento_queda','on') else 'Sem ocorrência' }}"
+            icon: mdi:human-handsdown
+            color: "{{ 'white' if is_state('binary_sensor.evento_queda','on') else 'grey' }}"
+            tap_action:
+              action: none
+            grid_options:
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  background: {{ 'linear-gradient(145deg, #D64545, #8E1F1F)' if is_state('binary_sensor.evento_queda','on') else 'rgba(255, 255, 255, 0.06)' }};
+                  --primary-text-color: #FFFFFF;
+                  --secondary-text-color: {{ 'rgba(255, 255, 255, 0.9)' if is_state('binary_sensor.evento_queda','on') else '#9FB0C2' }};
+                }
+          - type: custom:mushroom-template-card
+            primary: Vazamento de água
+            secondary: "{{ 'Ocorreu' if is_state('binary_sensor.evento_vazamento','on') else 'Sem ocorrência' }}"
+            icon: mdi:water-alert
+            color: "{{ 'white' if is_state('binary_sensor.evento_vazamento','on') else 'grey' }}"
+            tap_action:
+              action: none
+            grid_options:
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  background: {{ 'linear-gradient(145deg, #D64545, #8E1F1F)' if is_state('binary_sensor.evento_vazamento','on') else 'rgba(255, 255, 255, 0.06)' }};
+                  --primary-text-color: #FFFFFF;
+                  --secondary-text-color: {{ 'rgba(255, 255, 255, 0.9)' if is_state('binary_sensor.evento_vazamento','on') else '#9FB0C2' }};
+                }
+          - type: heading
+            heading: SENSORES DE QUEDA E CRISE
+            heading_style: subtitle
+          - type: custom:mushroom-template-card
+            primary: Sala
+            secondary: "{{ 'Sem sinal' if states('sensor.vida_esp32_sala') in ['0', 'unknown', 'unavailable'] else states('sensor.vida_esp32_sala') }}"
+            icon: mdi:heart-pulse
+            color: "{{ 'red' if states('sensor.vida_esp32_sala') in ['0', 'unknown', 'unavailable'] else 'green' }}"
+            vertical: true
+            tap_action:
+              action: none
+            grid_options:
+              columns: 3
+          - type: custom:mushroom-template-card
+            primary: Cozinha
+            secondary: "{{ 'Sem sinal' if states('sensor.vida_esp32_cozinha') in ['0', 'unknown', 'unavailable'] else states('sensor.vida_esp32_cozinha') }}"
+            icon: mdi:heart-pulse
+            color: "{{ 'red' if states('sensor.vida_esp32_cozinha') in ['0', 'unknown', 'unavailable'] else 'green' }}"
+            vertical: true
+            tap_action:
+              action: none
+            grid_options:
+              columns: 3
+          - type: custom:mushroom-template-card
+            primary: Copa
+            secondary: "{{ 'Sem sinal' if states('sensor.vida_esp32_copa') in ['0', 'unknown', 'unavailable'] else states('sensor.vida_esp32_copa') }}"
+            icon: mdi:heart-pulse
+            color: "{{ 'red' if states('sensor.vida_esp32_copa') in ['0', 'unknown', 'unavailable'] else 'green' }}"
+            vertical: true
+            tap_action:
+              action: none
+            grid_options:
+              columns: 3
+          - type: custom:mushroom-template-card
+            primary: Suíte
+            secondary: "{{ 'Sem sinal' if states('sensor.vida_esp32_suite') in ['0', 'unknown', 'unavailable'] else states('sensor.vida_esp32_suite') }}"
+            icon: mdi:heart-pulse
+            color: "{{ 'red' if states('sensor.vida_esp32_suite') in ['0', 'unknown', 'unavailable'] else 'green' }}"
+            vertical: true
+            tap_action:
+              action: none
+            grid_options:
+              columns: 3
+  - title: Histórico
+    path: historico
+    type: sections
+    theme: casa_escura
+    max_columns: 1
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: ÚLTIMOS 7 DIAS
+            heading_style: subtitle
+          - type: history-graph
+            hours_to_show: 168
+            grid_options:
+              columns: full
+            entities:
+              - entity: binary_sensor.cena_sono
+                name: Sono
+              - entity: binary_sensor.cena_calmante
+                name: Calma
+              - entity: binary_sensor.calmante_falhou
+                name: Calma falhou
+              - entity: binary_sensor.emergencia
+                name: Emergência
+          - type: markdown
+            content: Cada cômodo tem um sensor que manda um sinal de vida por segundo. Se o número parar de mudar, o sensor caiu.
+            grid_options:
+              columns: full

@@ -1,10 +1,11 @@
 # =====================================================================
-#  Servidor local - integracao com o LOGO! 1 por Modbus TCP
-#  Leitura de estado em modo somente leitura (coils dos marcadores)
+#  Servidor local - integração com o LOGO! 1 por Modbus TCP
+#  Leitura de estado em modo somente leitura
 #  Escrita restrita aos registradores de comando HR130 a HR136
-#  Enderecos dos marcadores: Mn -> coil 8255 + n
-#  Enderecos das saidas:     Qn -> coil n - 1
-#  Enderecos das entradas:   In -> entrada discreta n - 1
+#  Endereços dos marcadores: Mn -> coil 8255 + n
+#  Endereços das saídas:     Qn -> coil 8191 + n
+#  Endereços das entradas:   In -> entrada discreta n - 1
+#  Leitura a cada 5 s, o menor intervalo recomendado pela integração
 # =====================================================================
 
 default_config:
@@ -19,31 +20,51 @@ modbus:
       - name: "Cena Sono"
         address: 8265          # M10
         input_type: coil
-        scan_interval: 2
-      - name: "Cena Manha"
+        scan_interval: 5
+      - name: "Cena Manhã"
         address: 8266          # M11
         input_type: coil
-        scan_interval: 2
+        scan_interval: 5
       - name: "Cena Foco"
         address: 8267          # M12
         input_type: coil
-        scan_interval: 2
+        scan_interval: 5
       - name: "Cena Calmante"
         address: 8268          # M13
         input_type: coil
-        scan_interval: 2
-      - name: "Emergencia"
+        scan_interval: 5
+      - name: "Emergência"
         address: 8269          # M14
         input_type: coil
         device_class: safety
-        scan_interval: 1
-      # ---------------- verificacao e eventos ----------------
-      - name: "Anomalia na verificacao"
-        address: 8260          # M5 ANOM
+        scan_interval: 5
+      - name: "Verificação ativa"
+        address: 8270          # M15
         input_type: coil
-        device_class: problem
-        scan_interval: 2
-      - name: "Calma falhou"
+        scan_interval: 5
+      # ---------------- eventos retidos até o reset ----------------
+      - name: "Evento vazamento"
+        address: 8274          # M19
+        input_type: coil
+        scan_interval: 5
+      - name: "Evento gás"
+        address: 8275          # M20
+        input_type: coil
+        scan_interval: 5
+      - name: "Evento fumaça"
+        address: 8276          # M21
+        input_type: coil
+        scan_interval: 5
+      - name: "Evento queda"
+        address: 8277          # M22
+        input_type: coil
+        scan_interval: 5
+      - name: "Evento pânico"
+        address: 8278          # M23
+        input_type: coil
+        scan_interval: 5
+      # ---------------- indisponibilidades ----------------
+      - name: "Calmante falhou"
         address: 8279          # M24 CALMA_FALHOU
         input_type: coil
         scan_interval: 5
@@ -57,58 +78,165 @@ modbus:
         address: 8297          # M42 CHUVA
         input_type: coil
         device_class: moisture
-        scan_interval: 2
+        scan_interval: 5
       - name: "Persiana fechada"
         address: 8301          # M46 PERS_FECHADA
         input_type: coil
-        scan_interval: 2
+        scan_interval: 5
       - name: "Persiana descendo"
         address: 8302          # M47 PERS_DESCENDO
         input_type: coil
         device_class: moving
-        scan_interval: 1
+        scan_interval: 5
       - name: "Persiana subindo"
         address: 8305          # M50 PERS_SUBINDO
         input_type: coil
         device_class: moving
-        scan_interval: 1
-      # ---------------- portas (reed: 1 = fechada) ----------------
-      - name: "Porta da entrada"
-        address: 2             # I3
-        input_type: discrete_input
-        device_class: door     # on = aberta -> logica invertida abaixo
-        scan_interval: 2
-      - name: "Porta da geladeira"
-        address: 7             # I8
-        input_type: discrete_input
         scan_interval: 5
-      - name: "Sensor de chuva (bruto)"
-        address: 18            # I19
-        input_type: discrete_input
+      # ---------------- saídas (leitura) ----------------
+      - name: "Gás aberto"
+        address: 8194          # Q3 válvula de gás
+        input_type: coil
         scan_interval: 5
-      - name: "Reed da persiana"
-        address: 23            # I24
-        input_type: discrete_input
+      - name: "Semáforo verde"
+        address: 8197          # Q6
+        input_type: coil
         scan_interval: 5
-      # ---------------- saidas (leitura) ----------------
+      - name: "Semáforo amarelo"
+        address: 8198          # Q7
+        input_type: coil
+        scan_interval: 5
+      - name: "Semáforo vermelho"
+        address: 8199          # Q8
+        input_type: coil
+        scan_interval: 5
       - name: "Sirene externa"
-        address: 12            # Q13
+        address: 8204          # Q13
         input_type: coil
         device_class: sound
-        scan_interval: 2
+        scan_interval: 5
+      # ---------------- entradas de campo ----------------
+      - name: "Reed da porta da entrada"
+        address: 2             # I3 (1 = fechada)
+        input_type: discrete_input
+        scan_interval: 5
+      - name: "Detector de gás"
+        address: 5             # I6
+        input_type: discrete_input
+        device_class: gas
+        scan_interval: 5
+      - name: "Reed da geladeira"
+        address: 7             # I8 (1 = fechada)
+        input_type: discrete_input
+        scan_interval: 5
+      - name: "Sensor de chuva"
+        address: 18            # I19
+        input_type: discrete_input
+        device_class: moisture
+        scan_interval: 5
+    sensors:
+      # ------- pulso de vida dos nós ESP32 (contador de 1 s) -------
+      - name: "Vida ESP32 sala"
+        address: 120           # HR120
+        input_type: holding
+        data_type: uint16
+        scan_interval: 5
+      - name: "Vida ESP32 cozinha"
+        address: 121           # HR121
+        input_type: holding
+        data_type: uint16
+        scan_interval: 5
+      - name: "Vida ESP32 copa"
+        address: 122           # HR122
+        input_type: holding
+        data_type: uint16
+        scan_interval: 5
+      - name: "Vida ESP32 circulação"
+        address: 123           # HR123
+        input_type: holding
+        data_type: uint16
+        scan_interval: 5
+      - name: "Vida ESP32 suíte"
+        address: 124           # HR124
+        input_type: holding
+        data_type: uint16
+        scan_interval: 5
+      - name: "Vida ESP32 quarto social"
+        address: 125           # HR125
+        input_type: holding
+        data_type: uint16
+        scan_interval: 5
+      - name: "Vida ESP32 banheiro"
+        address: 126           # HR126
+        input_type: holding
+        data_type: uint16
+        scan_interval: 5
+      - name: "Vida ESP32 área de serviço"
+        address: 127           # HR127
+        input_type: holding
+        data_type: uint16
+        scan_interval: 5
 
 template:
   - binary_sensor:
-      # os reeds energizados significam FECHADO: inverte para exibir como porta
-      - name: "Entrada aberta"
+      # os reeds energizados significam FECHADO: a leitura é invertida
+      - name: "Porta da entrada aberta"
         device_class: door
-        state: "{{ is_state('binary_sensor.porta_da_entrada', 'off') }}"
+        state: "{{ is_state('binary_sensor.reed_da_porta_da_entrada', 'off') }}"
+        availability: "{{ has_value('binary_sensor.reed_da_porta_da_entrada') }}"
       - name: "Geladeira aberta"
         device_class: door
-        state: "{{ is_state('binary_sensor.porta_da_geladeira', 'off') }}"
-      - name: "Persiana aberta"
-        device_class: window
-        state: "{{ is_state('binary_sensor.reed_da_persiana', 'off') }}"
+        state: "{{ is_state('binary_sensor.reed_da_geladeira', 'off') }}"
+        availability: "{{ has_value('binary_sensor.reed_da_geladeira') }}"
+
+# ---------------- preferências do morador ----------------
+input_boolean:
+  registro_habilitado:   { name: "Guardar registro dos episódios" }
+  sugestoes_habilitadas: { name: "Receber sugestões de rotina" }
+  ciclo_habilitado:      { name: "Considerar meu ciclo nas sugestões" }
+
+input_datetime:
+  inicio_ultimo_ciclo:
+    name: "Início do último ciclo"
+    has_date: true
+    has_time: false
+
+input_number:
+  duracao_ciclo:
+    name: "Duração média do ciclo"
+    min: 20
+    max: 40
+    step: 1
+    unit_of_measurement: dias
+    mode: box
+
+input_text:
+  sugestao_do_dia:
+    name: "Sugestão do dia"
+    max: 255
+
+# ---------------- histórico, voz, avisos e sugestões ----------------
+recorder:
+  purge_keep_days: 120
+
+conversation:
+intent_script: !include intents.yaml
+
+shell_command:
+  gerar_sugestao: "python3 /config/sugestao/sugestao.py"
+
+notify:
+  - name: morador
+    platform: group
+    services:
+      - action: mobile_app_celular_morador
+  - name: cuidador
+    platform: group
+    services:
+      - action: mobile_app_celular_cuidador
+
+frontend:
+  themes: !include themes.yaml
 
 script: !include scripts.yaml
 automation: !include automations.yaml

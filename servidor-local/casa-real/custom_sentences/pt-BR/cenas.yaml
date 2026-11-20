@@ -1,0 +1,40 @@
+# Frases aceitas pelos assistentes de voz locais
+language: "pt-BR"
+intents:
+  CenaSono:
+    data:
+      - sentences:
+          - "boa noite"
+          - "vou dormir"
+          - "(ativar|ligar) [a] cena [do] sono"
+  CenaManha:
+    data:
+      - sentences:
+          - "bom dia"
+          - "(ativar|ligar) [a] cena [da] manhã"
+  CenaFoco:
+    data:
+      - sentences:
+          - "modo foco"
+          - "(preciso|quero) [me] concentrar"
+          - "(ativar|ligar) [a] cena [do] foco"
+  CenaCalmante:
+    data:
+      - sentences:
+          - "modo calma"
+          - "preciso de calma"
+          - "(ativar|ligar) [a] cena calmante"
+  VerificarCasa:
+    data:
+      - sentences:
+          - "verificar [a] casa"
+          - "[a] casa está segura"
+          - "está tudo fechado"
+  PersianaSubir:
+    data:
+      - sentences:
+          - "(subir|abrir) [a] persiana"
+  PersianaDescer:
+    data:
+      - sentences:
+          - "(descer|fechar) [a] persiana"

@@ -1,0 +1,36 @@
+*** 11/18/26, 9:46 PM TCC_Logo2.lsc
+*** Determine LOGO!
+Resources used:
+Function Blocks         25/400
+REM                     5/250
+Digital Inputs          5/24
+Digital Outputs         2/20
+Flag                    6/64
+Analog Inputs           0/8
+Text Box                1/50
+Text contents           1/50
+Analog outputs          0/8
+Program memory          348/8500
+Block names             0/100
+Analog flags            0/64
+Cursor keys             0/4
+Shift register          0/4
+Shift register bits     0/32
+Open connectors         0/64
+LOGO! TD Function keys  0/4
+Network inputs          4/64
+Network analog inputs   0/32
+UDF types               0/16
+UDF instances           0/64
+Data Log                0/1
+Network outputs         2/64
+Network analog outputs  0/16
+Analog Filters          0/8
+Layout memory           6064/511980
+Maximum nesting depth: M50-B002-B006-B007-B009-B012-M51
+The following LOGO! can be used:
+LOGO! 8 (0BA8.Standard)
+LOGO! 8.1 & 8.2 (LOGO! 8.FS4)
+LOGO! 8.3
+LOGO! 8.4
+Blocks without connection to an output:
